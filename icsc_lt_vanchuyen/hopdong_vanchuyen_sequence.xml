@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        <!--
+	    Sequence types for pickings
+	    -->
+
+        <record id="seq_type_hopdongvc" model="ir.sequence.type">
+            <field name="name">hop dong vc</field>
+            <field name="code">icsc.hopdong.vanchuyen</field>
+        </record>
+     
+        <!--
+            Sequences for pickings
+        -->
+
+        <record id="seq_hopdongvc" model="ir.sequence">
+            <field name="name">hop dong vc</field>
+            <field name="code">icsc.hopdong.vanchuyen</field>
+            <field name="prefix"></field>
+            <field name="padding">2</field>
+            <field name="company_id" eval="False"/>
+        </record>   
+        
+        <!--
+	    Sequence types for icsc.phieuvipham.vanchuyen
+	    -->
+
+        <record id="seq_type_phieuvipham" model="ir.sequence.type">
+            <field name="name">Phieu vi pham van chuyen</field>
+            <field name="code">icsc.phieuvipham.vanchuyen</field>
+        </record>
+     
+        <!--
+            Sequences for icsc.phieuvipham.vanchuyen
+        -->
+
+        <record id="seq_phieuvipham" model="ir.sequence">
+            <field name="name">Phieu vi pham van chuyen</field>
+            <field name="code">icsc.phieuvipham.vanchuyen</field>
+            <field name="prefix"></field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>   
+         <!--
+	    Sequence types for icsc.phieuvipham.vanchuyen
+	    -->
+
+        <record id="seq_type_phieudntt" model="ir.sequence.type">
+            <field name="name">Phieu vi de nghi thanh toan</field>
+            <field name="code">icsc.denghithanhtoan.vanchuyen</field>
+        </record>
+     
+        <!--
+            Sequences for icsc.denghithanhtoan.vanchuyen
+        -->
+
+        <record id="seq_phieudntt" model="ir.sequence">
+            <field name="name">Phieu vi de nghi thanh toan</field>
+            <field name="code">icsc.denghithanhtoan.vanchuyen</field>
+            <field name="prefix"></field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>               
+       
+  
+    </data>
+</openerp>

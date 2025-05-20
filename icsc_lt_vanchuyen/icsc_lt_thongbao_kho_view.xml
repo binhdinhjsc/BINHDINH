@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    
+    	<record id="view_icsc_khvc_thongbao_kho_tree" model="ir.ui.view">
+	            <field name="name">icsc.khvc.thongbao.kho.tree</field>
+	            <field name="model">icsc.khvc.thongbao.kho</field>
+	            <field name="priority">4</field>
+	            <field name="arch" type="xml">
+	                <tree string="Thông tin thay đối KHVC" >		
+	                		 <field name="name"  />                      
+	                         <field name="so_khvc"  />  
+	                         <field name="congty_vc"  />             	                  		                 
+	                    	 <field name="ngay_capnhat"  />                      
+	                         <field name="sale_id"  /> 
+	                         <field name="state" />
+	                </tree>
+	             </field>
+	     </record>
+        <record id="view_icsc_khvc_thongbao_kho_form" model="ir.ui.view">
+            <field name="name">icsc.khvc.thongbao.kho.from</field>
+            <field name="model">icsc.khvc.thongbao.kho</field>
+            <field name="arch" type="xml">
+                <form string="Thông tin cập nhật" version="7.0">
+               		<header>   
+	                                       
+                        <button name="action_confirm" string="Xác nhận" type="object" states="draft" class="oe_highlight" />
+                        <button name="action_done" string="Hoàn tất" type="object" states="confirm" />
+<!--              		    <button name="action_cancel" states="draft,confirm,done" string="Hủy yêu cầu" type="object" /> -->
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirm,done" statusbar_colors='{"cancel":"red","confirm":"blue"}'/>
+               		 </header>
+                    <sheet>
+                     <group >
+	                    <group >
+	                        <field name="name"  />                      
+	                        <field name="so_khvc"  />  
+	                         <field name="congty_vc"  />  
+	                    </group>
+	                         <group >
+	                        <field name="ngay_capnhat"  />                      
+	                        <field name="sale_id"  /> 
+	                       
+	                    </group>
+	                  </group>
+	                  <field name="picking_ids" />
+                     <field name="line_ids">
+                     	<tree string="Thông tin vật tư thay đổi"  readonly="1"  >		
+					                	<field name="sale_order_line" /> 
+					                	<field name="chitiet_kh" />  
+					                	<field name="product_id" /> 
+					                    <field name="kl_vc_kehoach_cu"  sum="total"  />  
+					                    <field name="kl_vc_kehoach_moi" sum="total"  />			                   
+					                    <field name="dia_chi_giao" />  		                 
+					                </tree>
+					                 <form string="Chi tiết vận chuyển"  vertion="7.0"> 		
+					                	<sheet>
+						                	
+							                 <group>
+								                 <group>
+								                     
+								                     <field name="sale_order_line" /> 
+								                	<field name="chitiet_kh" />  
+								                	<field name="product_id" />                    
+								                  </group>
+								                   <group>
+								                       <field name="kl_vc_kehoach_cu"  sum="total"  />  
+									                    <field name="kl_vc_kehoach_moi" sum="total"  />			                   
+									                    <field name="dia_chi_giao" />  
+								                   </group>
+							                 </group>	
+		                 					      	               
+	                					 </sheet> 
+	              				 
+					                </form>
+                     </field>
+                       <field name="dien_giai" placeholder="Ghi chú..."/>  
+                    </sheet> 
+                    <div class="oe_chatter"><field name="message_ids" widget="mail_thread"/></div>                  
+                 </form>
+            </field>
+        </record>   
+	<record id="action_icsc_khvc_thongbao_kho" model="ir.actions.act_window">
+               <field name="name">Thông báo thay đổi KHVC</field>
+               <field name="type">ir.actions.act_window</field>
+               <field name="res_model">icsc.khvc.thongbao.kho</field>
+               <field name="view_type">form</field>
+               <field name="view_mode">tree,form</field>              
+               
+        </record>
+      <menuitem  id="menu_action_icsc_khvc_thongbao_kho" name="Thông tin từ KHVC" parent="stock.menu_stock_root" sequence="1" groups="stock.group_stock_user_edit,stock.group_stock_manager" /> 	
+	  <menuitem action="action_icsc_khvc_thongbao_kho" id="menu_action_icsc_khvc_thongbao_kho_main" name="Cập nhật từ KHVC" parent="menu_action_icsc_khvc_thongbao_kho" sequence="1" groups="stock.group_stock_user_edit,stock.group_stock_manager" /> 	
+	
+    </data>
+</openerp>

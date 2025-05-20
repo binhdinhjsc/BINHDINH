@@ -1,0 +1,95 @@
+<openerp>
+      <data>
+
+        <record id="view_icsc_lt_chitiet_sanpham" model="ir.ui.view">
+            <field name="name">Danh sách sản phẩm của lệnh xuất hàng</field>
+            <field name="model">icsc.lt.chitiet.sanpham</field>
+            <field name="arch" type="xml">
+                <form string="Danh sách sản phẩm của lệnh xuất hàng" version="7.0" >
+                    <group>  
+                   
+                                
+                        <field name="kehoach_id"  readonly="1" />
+                         <field name="sale_id"  readonly="1"/>
+                       
+                    </group>
+                     <field name = "line_ids" >                        
+                            <tree string="Sản phẩm" >
+                                <field name="product_id" string="Sản phẩm/LXH"/>
+                                <field name="dia_chi_giao" />
+                                <field name="product_uom_qty" string="KL/LXH"/>
+                                 <field name="price_unit" string="Đơn giá/Lệnh xuất hàng" invisible="1"/>
+                                <field name="product_uom" string="Đơn vị/LXH"/>
+                                <field name="ton_khvc" string="KL còn lại/LXH"/>
+                          	    <field name="state" invisible="1" />
+                            </tree>
+                        </field>
+                    <footer>
+                        <button name="tao_kehoach_vanchuyen" string="Đưa vào kế hoạch" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Hủy bỏ" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_icsc_lt_chitiet_sanpham" model="ir.actions.act_window">
+               <field name="name">Danh sách sản phẩm của lệnh xuất hàng</field>
+               <field name="type">ir.actions.act_window</field>
+               <field name="res_model">icsc.lt.chitiet.sanpham</field>
+               <field name="view_type">form</field>
+               <field name="view_mode">form</field>
+               <field name="context">{'record_id' : active_id}</field>
+               <field name="target">new</field>
+        </record>
+         <record id="action_icsc_lt_chitiet_sanpham_khongtrungchuyen" model="ir.actions.act_window">
+               <field name="name">Danh sách sản phẩm của lệnh xuất hàng</field>
+               <field name="type">ir.actions.act_window</field>
+               <field name="res_model">icsc.lt.chitiet.sanpham</field>
+               <field name="view_type">form</field>
+               <field name="view_mode">form</field>
+               <field name="context">{'record_id' : active_id}</field>
+               <field name="target">new</field>
+        </record>
+        
+      <record id="view_icsc_lt_chitiet_sanpham_ngoaile" model="ir.ui.view">
+            <field name="name">Danh sách sản phẩm của lệnh xuất hàng</field>
+            <field name="model">icsc.lt.sanpham.ngoaile</field>
+            <field name="arch" type="xml">
+                <form string="Danh sách sản phẩm của lệnh xuất hàng" version="7.0" >
+                    <group>  
+                        <field name="kehoach_id"  readonly="1" />
+                        <field name="sale_id"  readonly="1"/>
+                    </group>
+                     <field name = "line_ids" create="0">                        
+                            <tree string="Sản phẩm" editable="bottom" create="0">
+                            	<field name="sale_line_id" invisible="1" />
+                                <field name="product_id" string="Sản phẩm/LXH" readonly="1"/>
+                                <field name="dia_chi_giao" readonly="1"/>
+                                <field name="product_uom_qty" string="KL/LXH" readonly="1"/>
+                                <field name="product_uom" string="Đơn vị/LXH" readonly="1"/>
+                                <field name="ton_khvc" string="KL còn lại/LXH" readonly="1"/>
+                                <field name="kl_can_vanchuyen"/>
+                            </tree>
+                        </field>
+                    <footer>
+                        <button name="tao_kehoach_vanchuyen" string="Đưa vào kế hoạch" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Hủy bỏ" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+      <record id="action_icsc_lt_chitiet_sanpham_ngoaile" model="ir.actions.act_window">
+               <field name="name">Danh sách sản phẩm của lệnh xuất hàng</field>
+               <field name="type">ir.actions.act_window</field>
+               <field name="res_model">icsc.lt.sanpham.ngoaile</field>
+               <field name="view_type">form</field>
+               <field name="view_mode">form</field>
+               <field name="context">{'record_id' : active_id}</field>
+               <field name="target">new</field>
+        </record>
+</data>
+</openerp>
+
+

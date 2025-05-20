@@ -1,0 +1,550 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>    
+    <record id="view_vpicktree_form" model="ir.ui.view">
+          <field name="name">stock.picking.out.tree</field>
+          <field name="model">stock.picking.out</field>
+          <field name="inherit_id" ref="stock.view_picking_out_tree"/>
+          <field name="arch" type="xml"> 
+          <xpath expr="//field[@name='partner_id']"  position="after">	            	
+	          <field name="sale_id" attrs="{'readonly': [('state', '=', 'done')]}" string="Lệnh xuất hàng"/>
+	          <field name="tong_khoiluong"/> 
+	          <field name="haiduong_id" invisible="1"/> 
+	          <field name="ngay_giao" invisible="1"/> 
+          </xpath>   
+           <xpath expr="//field[@name='origin']"  position="replace">	            	
+             	<field name="origin" invisible="1"/>
+             	<field name="loai_vanchuyen" invisible="1"/>
+                <field name="type_kho" invisible="1"/>
+                <field name="kehoach_vanchuyen_id" invisible="1"/>
+             	<field name="auto_update_name" invisible="1"/>
+            </xpath>   
+            <xpath expr="//field[@name='stock_journal_id']"  position="replace">	            	
+                <field name="don_vi_vc"/>
+                <field name="donvi_vanchuyen" invisible="1"/>
+                <field name="dai_dien" invisible="1"/>
+            </xpath>   
+             <xpath expr="//field[@name='backorder_id']"  position="replace">	            	
+               <field name="backorder_id" invisible="1"/>
+            </xpath>  
+                             
+	 		</field>
+	 </record>
+	  <record id="view_view_picking_in_search_form12" model="ir.ui.view">
+          <field name="name">stock.picking.in.search12</field>
+            <field name="model">stock.picking.in</field>
+            <field name="inherit_id" ref="stock.view_picking_in_search"/>
+            <field name="arch" type="xml">  
+            <xpath expr="//search/group/filter[@name='state']"  position="after">	            	
+               <filter string="Đơn vị thực hiện" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'haiduong_id'}"/>
+            </xpath>   
+                        
+	 		</field>
+	 </record>
+	 
+	  <record id="view_view_picking_in_tree12" model="ir.ui.view">
+          <field name="name">stock.picking.in.tree12</field>
+            <field name="model">stock.picking.in</field>
+            <field name="inherit_id" ref="stock.view_picking_in_tree"/>
+            <field name="arch" type="xml">  
+            <xpath expr="//field[@name='state']"  position="after">	            	
+                <field name="haiduong_id" invisible="1"/>
+            </xpath>   
+                        
+	 		</field>
+	 </record>
+	 <record id="view_view_picking_form_internal" model="ir.ui.view">
+          <field name="name">stock.picking.internal.form</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+             <xpath expr="/form/header//button[@string='Reverse Transfer']"  position="replace">
+             	<button name="%(stock.act_stock_return_picking)d" attrs="{'invisible': [('type', '=', 'internal')]}" string="Reverse Transfer"  type="action" groups="base.group_stock_user_return"/>
+             </xpath>  
+             <xpath expr="/form/header//button[@string='Sửa PXK']"  position="replace">
+             	<button name="%(stock.action_stock_update)d" attrs="{'invisible': ['|',('type', '=', 'internal'),('state','not in',('done'))]}" string="Sửa PXK" type="action" groups="stock.group_stock_user_edit"/>	  
+             	<button name="%(action_stock_update_internal)d" attrs="{'invisible': [('type', '!=', 'internal')]}" string="Sửa PXK" type="action" groups="stock.group_stock_user_edit"/>	 
+             </xpath>  
+            <xpath expr="//field[@name='move_lines']"  position="replace">	            	
+                 <field name="move_lines" context="{'address_in_id': partner_id, 'form_view_ref':'view_move_picking_form', 'tree_view_ref':'view_move_picking_tree', 'picking_type': 'internal'}"  options='{"reload_on_button": true}'>
+                          	 <tree  string="Stock Moves" >
+                          		<field name="check"/>
+			                    <field name="product_id"/>
+			                    <field name="product_qty" on_change="onchange_quantity(product_id, product_qty, product_uom, product_uos)" />
+			                    <field name="product_uom" string="Đơn vị" groups="product.group_uom"/>
+			                    <field name="location_id" groups="stock.group_locations" string="Kho xuất"/>
+			                    <field name="picking_id" invisible="1" />
+			                    <field name="create_date" invisible="1" />
+			                    <field name="date_expected" invisible="1" />
+			 					<field name="product_uos" invisible="1" />
+			                      <field name="location_dest_id" groups="stock.group_locations" string="Kho gửi" />
+			                      <field name="state"/>
+			                </tree>
+				            <form string="Stock Moves" version="7.0">
+				                <header>
+				                        <button name="force_assign" states="confirmed" string="Force Availability" type="object" groups="base.group_user"/>
+				                        <button name="action_confirm" states="draft" string="Confirm" type="object" groups="base.group_user"/>
+				                        <button name="cancel_assign" states="assigned" string="Cancel Availability" type="object" groups="base.group_user"/>
+				                        <field name="state" widget="statusbar" statusbar_visible="draft,assigned,done"/>
+				                </header>
+				                <group>
+				                    <group>
+				                    	<field name="check" />
+				                        <field name="name" invisible="1"/>
+				                        <field name="product_id" on_change="onchange_product_id(product_id,location_id,location_dest_id, parent.partner_id)"/>
+				                        <field name="type" invisible="1"/>
+				                        <label for="product_qty"/>
+				                        <div>
+				                            <field name="product_qty" on_change="onchange_quantity(product_id, product_qty, product_uom, product_uos)" class="oe_inline"/>
+				                            <field name="product_uom" string="Unit Of Measure" groups="product.group_uom" class="oe_inline"/>
+				                        </div>
+				                            <field name="product_uos" invisible="1" />
+				                            <field name="partner_id"/>
+				                     </group>
+				                            <group>
+				                                <field name="create_date" invisible="1"/>
+				                                <field name="date"/>
+				                                <field name="date_expected" on_change="onchange_date(date,date_expected)"/>
+				                            </group>
+				
+				                            <group string="Locations" groups="stock.group_locations">
+				                                <field name="location_id" />
+				                                <field name="location_dest_id"  groups="stock.group_locations"/>
+				                            </group>
+				
+				                    </group>
+				                </form>
+				        </field>
+				                           
+            </xpath>   
+                        
+	 		</field>
+	 </record>
+    	 <record id="view_picking_out_search_replace_vc" model="ir.ui.view">
+            <field name="name">stock.picking.out.inherit.select.vc</field>
+            <field name="model">stock.picking.out</field>
+            <field name="inherit_id" ref="stock.view_picking_out_search"/>
+            <field name="arch" type="xml">
+                 <xpath expr="//search"  position="replace">
+                    <search string="Phiếu xuất kho">
+                    <field name="sale_id" string="Lệnh xuất hàng" filter_domain="[('sale_id','ilike',self)]"/>
+                    <field name="name" string="Phiếu xuất kho" filter_domain="['|',('name','ilike', self),('origin','ilike',self)]"/>
+                    <filter icon="terp-check" name="sẵn sàng giao hàng" string="Ready" domain="[('state','=','assigned')]" help="Assigned Delivery Orders"/>
+                    <filter icon="terp-camera_test" name="Đang đợi" string="Waiting" domain="[('state','=','confirmed')]" help="Confirmed Delivery Orders"/>
+                    <filter icon="terp-dialog-close" name="Hoàn tất" string="Done" domain="[('state','=','done')]" help="Delivery orders already processed"/>
+                    <separator/>
+                    <filter icon="terp-accessories-archiver-minus" string="Phiếu xuất kho nguồn" domain="[('backorder_id', '!=', False)]" help="Is a Back Order"/>
+                    <separator/>
+                    <filter icon="terp-dolar" name="to_invoice" string="To Invoice" domain="[('invoice_state','=','2binvoiced')]" help="Delivery orders to invoice"/>
+                    <separator/>
+                    <filter icon="terp-accessories-archiver-minus" name="tong_khoiluong" string="Có số lượng" domain="[('tong_khoiluong', '!=', 0)]" help="Tổng khối lượng lớn hơn 0"/>
+                    <filter icon="terp-accessories-archiver-minus" string="Không có số lượng" domain="[('tong_khoiluong', '=', 0)]" help="Tổng khối lượng bằng 0"/>
+                    <separator/>
+                    <field name="partner_id" filter_domain="[('partner_id','child_of',self)]"/>
+                   
+                    <field name="don_vi_vc" filter_domain="[('don_vi_vc','ilike',self)]"/>
+                    <field name="stock_journal_id"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                    
+                    <group expand="0" string="Group By...">
+                        <filter string="Status" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'state'}"/>
+                        <filter string="Ngày đặt" icon="terp-go-month" domain="[]"  context="{'group_by':'date'}"/>
+                        <filter string="Ngày dự kiến" icon="terp-go-month" domain="[]"  context="{'group_by':'min_date'}"/>
+                        <filter string="Nhật ký" icon="terp-folder-orange" domain="[]" context="{'group_by':'stock_journal_id'}"/>
+                        <filter string="Lệnh xuất hàng" icon="terp-folder-orange" domain="[]" context="{'group_by':'sale_id'}"/>
+                        <filter string="Khách hàng" icon="terp-folder-orange" domain="[]" context="{'group_by':'partner_id'}"/>
+                         <filter string="Đơn vị vận chuyển" icon="terp-folder-orange" domain="[]" context="{'group_by':'donvi_vanchuyen'}"/>
+                        <filter string="Kế hoạch vận chuyển" icon="terp-folder-orange" domain="[]" context="{'group_by':'kehoach_vanchuyen_id'}"/>
+                        <filter string="Loại vận chuyển" icon="terp-folder-orange" domain="[]" context="{'group_by':'loai_vanchuyen'}"/>
+                        <filter string="Loại xuất kho" icon="terp-folder-orange" domain="[]" context="{'group_by':'loai_xuatkho'}"/>
+                        <filter string="Loại hình kho" icon="terp-folder-orange" domain="[]" context="{'group_by':'type_kho'}"/>
+                        <filter string="Đơn vị thực hiện" icon="" domain="[]" context="{'group_by':'haiduong_id'}"/>
+                        <filter string="Ngày giao" icon="" domain="[]" context="{'group_by':'ngay_giao'}"/>
+                  
+                    </group>
+                </search>
+                </xpath>
+            </field>
+        </record>
+        
+        
+    	 <record id="stock_picking_inherit_vc" model="ir.ui.view">
+            <field name="name">stock.picking.inherit.form.vc</field>
+            <field name="model">stock.picking.out</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+             
+                 <field name="move_type" position="after">
+                 	<field name="kehoach_vanchuyen_id" attrs="{'readonly': [('state', '=', 'done')]}"/>  
+                    <field name="doitac_giaohang" on_change="load_ma_vung(partner_id,doitac_giaohang)" attrs="{'readonly': [('state', '=', 'done')]}"/>	            
+                	<field name="don_vi_vc" attrs="{'readonly': [('state', '=', 'done')]}"/>
+	               	<field name="dai_dien" attrs="{'readonly': [('state', '=', 'done')]}"/>
+	             	 
+                </field>
+               <xpath expr="//notebook"  position="inside">	
+               	    <page string="Phiếu vận chuyển liên quan" attrs="{'invisible': [('kehoach_vanchuyen_id', '=', False)]}" >
+               	    		<field name="pvc_ids" attrs="{'invisible': [('kehoach_vanchuyen_id', '=', False)]}" />
+               	    </page>        	
+	           </xpath>
+            </field>
+        </record>
+ 
+		<record id="view_picking_out_form_form" model="ir.ui.view">
+          <field name="name">stock.picking.out.form</field>
+            <field name="model">stock.picking.out</field>
+            <field name="inherit_id" ref="stock.view_picking_out_form"/>
+            <field name="arch" type="xml"> 
+              <xpath expr="/form/header//button[@name='action_process']" position="replace">
+                  <button name="action_process"  string="Giao hàng" type="object" class="oe_highlight"
+                  attrs="{'invisible': ['|','|',('state','!=','assigned'),('bang_kiem_soat','=',False),('daidien_muahang','=',False)]}"/>
+             </xpath>  
+                              
+	        	<xpath expr="//field[@name='stock_journal_id']"  position="after">	            	
+	               	   <field name="auto_update_name" invisible="1"/>
+                       <field name="daidien_muahang" attrs="{'readonly': [('state', '=', 'done')]}" context="{'default_parent_id': partner_id}"/>   
+                       <field name="loai_vanchuyen" attrs="{'readonly': [('state', '=', 'done')]}"/> 
+                       <field name="loai_lenh_vc"  class="oe_highlight_vanchuyen"/>
+	        	</xpath>
+	        	 <xpath expr="//notebook" position="before">
+                  <group>
+                  	<group>
+                  		<field name="bang_kiem_soat" required="1"/> 
+                  	</group>
+                  	<group>
+                  		<field name="is_npp"/>
+                  		<field name="npp_id" attrs="{'invisible': [('is_npp', '=', False)]}"/>
+                  		<field name="npp_delivery_id" on_change="onchange_npp_id(npp_id, npp_delivery_id)" domain="[('parent_other_id','=', npp_id)]" attrs="{'invisible': [('is_npp', '=', False)]}"/>
+                  		<field name="npp_mavung" attrs="{'invisible': [('is_npp', '=', False)]}"/> 
+                  	</group>
+                  	<group>
+                  		<field name="bang_kiem_soat" required="1"/> 
+                  	</group>					
+                  </group>
+                </xpath>
+	        	<xpath expr="//field[@name='origin']"  position="after">	            	
+	               	  <field name="so_theo_doi_vc" invisible="1"/>
+	               	
+                      <field name="khoxuat_id" attrs="{'readonly': [('sale_id', '!=', False)]}"/>  
+                      <field name="ma_vung" attrs="{'readonly': [('state', '=', 'done')]}"/>        
+  					   <field name="type_kho" attrs="{'readonly': [('sale_id', '!=', False)]}"/>    
+	        	</xpath>
+	        	<xpath expr="//field[@name='auto_picking']"  position="after">	            	
+	               	 <field name="hoa_don_id"/>	               	                
+                      
+	        	</xpath>
+	        	 <xpath expr="//field[@name='partner_id']" position="replace">
+                    <field name="partner_id" attrs="{'readonly': [('sale_id', '!=', False)]}"  on_change="onchange_partner_in(partner_id)" string="Khách hàng" domain="[('customer','=',True)]" />
+                	  
+                </xpath>
+           
+             
+            </field>   
+         </record>	   
+         
+         <record id="view_move_picking_form_inherit_form1" model="ir.ui.view">
+           <field name="name">stock.move.inherit.form</field>
+            <field name="model">stock.move</field>
+            <field name="inherit_id" ref="stock.view_move_form"/>
+            <field name="arch" type="xml">                
+	        	
+	        	<xpath expr="//field[@name='partner_id']"  position="after">	            	
+	               	 <field name="doitac_giaohang" attrs="{'readonly': [('state', '=', 'done')]}"/>
+	               	        
+                      
+	        	</xpath>
+            </field>   
+         </record>	   
+           
+           <record id="view_move_picking_tree_inherit_form" model="ir.ui.view">
+           <field name="name">stock.move.tree</field>
+            <field name="model">stock.move</field>
+            <field name="inherit_id" ref="stock.view_move_picking_tree"/>
+            <field name="arch" type="xml">                
+	        	<xpath expr="//field[@name='product_id']"  position="before">	            	
+	               	  <field name="check"/>
+	               	  <field name="no"/>
+	               	  <field name="sale_line_id" string="Chi tiết LXH"/>
+	               	   <field name="chitiet_kh" invisible="1"/>
+	            </xpath>
+	        	<xpath expr="//field[@name='location_id']"  position="replace">	            	
+	               	
+	               	 <field name="doitac_giaohang" attrs="{'readonly': ['|',('sale_line_id', '!=', False),('chitiet_kh', '!=', False)]}"/>
+	               	  <field name="location_id" string="Kho xuất" />
+	            </xpath>
+	        	<xpath expr="//field[@name='location_dest_id']"  position="replace">	            	
+<!-- 	               	 <field name="location_dest_id" string="Địa điểm đích"  attrs="{'readonly': ['|',('sale_line_id', '!=', False),('chitiet_kh', '!=', False)]}"/> -->
+	               	 <field name="location_dest_id" string="Địa điểm đích"  invisible="1" />
+	            </xpath>
+	        	<xpath expr="//field[@name='product_qty']"  position="replace">	            	
+	               	 <field name="product_qty" on_change="onchange_quantity(product_id, product_qty, product_uom, product_uos)" attrs="{'readonly': ['|',('sale_line_id', '!=', False),('chitiet_kh', '!=', False)]}"/>
+	            </xpath>
+	        	<xpath expr="//field[@name='product_id']"  position="replace">	            	
+	               	 <field name="product_id" on_change="onchange_product_id(product_id,location_id,location_dest_id, False)" attrs="{'readonly': ['|',('sale_line_id', '!=', False),('chitiet_kh', '!=', False)]}"/>
+	            </xpath>	        	 
+	        	<xpath expr="//field[@name='product_uos']"  position="replace">	            	
+	               	 <field name="product_uos" invisible="1"/>
+	            </xpath>
+            </field>   
+         </record>	
+         
+         
+         <record id="view_invoice_form_inherit_form2" model="ir.ui.view">
+           <field name="name">account.invoice.form.inherit2</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">     
+             <xpath expr="//form/header/button[@name='action_cancel_draft']" position="after">
+              <button name="%(action_icsc_hoadon_update)d" attrs="{'invisible': ['|',('state','=','draft'),('state','=','cancel')]}"  string="Sửa số hóa đơn" type="action"  groups="base.nhom_quan_ly_trambanhang_chinhsua"/>
+               </xpath>       
+                <xpath expr="//button[@name='button_reset_taxes']" position="replace">
+                   <button name="button_reset_taxes" states="draft,proforma2" string="Cập nhật thuế" class="oe_highlight" type="object" help="Tính lại thuế và tổng tiền"/>
+               </xpath>    
+	           <xpath expr="//field[@name='fiscal_position']"  position="replace">	            	
+	               	 <field name="fiscal_position"  invisible="1"/>               	 
+	           </xpath>
+	        	 <xpath expr="//field[@name='partner_id']"  position="replace">	            	
+	               	 <field name="partner_id" attrs="{'readonly': [('lenh_xuat_hang_id', '!=', False)]}"  on_change="onchange_partner_in(partner_id)" string="Khách hàng"/>
+	               	 <field name="lenh_xuat_hang_id" on_change="load_hinh_thuc_khuyenmai(lenh_xuat_hang_id)"/>
+	               	 <field name="hinh_thuc_khuyenmai"/>
+	               	 <field name="co_phi_baove"/>	               	        
+                      
+	        	</xpath>
+	        	 <xpath expr="//field[@name='payment_term']"  position="replace">	            	
+	               	 <field name="payment_term"  invisible="1"/>               	 
+	           </xpath>
+	            <xpath expr="//field[@name='account_id']"  position="replace">	            	
+	                <field domain="[('company_id', '=', company_id),('type','=', 'receivable')]"
+                                name="account_id" groups="account.group_account_user" />
+	           </xpath>
+	            <xpath expr="//field[@name='journal_id']"  position="replace">	            	
+	               	 <field name="journal_id"  invisible="1"/>               	 
+	           </xpath>
+	            <xpath expr="//field[@name='so_hoa_don']"  position="after">	            	
+	               	 <field name="so_quyen"  />               	 
+	           </xpath>
+	             <xpath expr="//field[@name='so_hoa_don']"  position="before">	            	
+	               	 <field name="lenh_xuat_kho_id"  class="oe_highlight_vanchuyen" />               	 
+	           </xpath>
+	            <xpath expr="//field[@name='loai_hoadon']"  position="after">	            	
+	               	 <field name="check" attrs="{'invisible': [('co_phi_baove','=',False)]}"/>           	 
+	           </xpath>
+	             <xpath expr="//field[@name='amount_tax']"  position="after">	            	
+	               	 <field name="phi_baove_moitruong" widget="monetary" options="{'currency_field': 'currency_id'}" attrs="{'invisible': [('co_phi_baove','=',False)]}" />
+	           </xpath>
+	           	
+              <xpath expr="//field[@name='loai_hoadon']"  position="after">	  
+               		<field name="daidien_muahang" invisible="1" />          	
+              	 	<field name="daidien_muahangs" readonly="1" />
+              	   	<field name="haiduong_id" />    
+              	    <field name="loai_lenh_xuat" />    
+              </xpath> 
+              <xpath expr="//page[@string='Invoice Lines']/field[@name='invoice_line']/tree/field[@name='invoice_line_tax_id']" position="replace" >
+              	 <field name="invoice_line_tax_id" widget="many2many_tags" context="{'type':parent.type}"
+                        domain="[('parent_id','=',False),('company_id', '=', parent.company_id)]"
+                        on_change="onchange_tax(invoice_line_tax_id,product_id)"/>
+              </xpath>
+            </field>   
+         </record>	   
+         <!--<record id="view_invoice_tree_inherit_form" model="ir.ui.view">
+           <field name="name">account.invoice.tree.inherit</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_tree"/>
+            <field name="arch" type="xml">              
+	           <xpath expr="//field[@name='partner_id']"  position="after">	            	
+	               	 <field name="lenh_xuat_hang_id" />  
+	               	 <field name="lenh_xuat_kho_id" /> 
+	               	  <field name="haiduong_id"  invisible="1"/>            	 
+	           </xpath>
+	             <xpath expr="//field[@name='so_hoa_don']"  position="after">	            	
+	               	 <field name="so_quyen" />               	 
+	           </xpath>
+	           <xpath expr="//field[@name='date_due']"  position="replace">	            	
+	               	 <field name="tong_khoiluong" />               	 
+	           </xpath>
+	          
+            </field>   
+         </record>  -->
+           
+    
+        <record id="view_picking_out_form_vc" model="ir.ui.view">
+            <field name="name">stock.picking.out.form.vc</field>
+            <field name="model">stock.picking.out</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">  
+                <xpath expr="//field[@name='invoice_state']" position="replace">
+                	  <field name="invoice_state" attrs="{'readonly': [('sale_id', '!=', False)]}"/>
+                </xpath>
+                  <xpath expr="//field[@name='auto_picking']" position="replace">
+                	  <field name="auto_picking" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='date_done']" position="replace">
+                	  <field name="date" />
+                	    <field name="haiduong_id" />   
+                </xpath>
+                <xpath expr="//field[@name='date']" position="replace">
+                	  <field name="date_done" />
+                </xpath>
+                <xpath expr="//field[@name='stock_journal_id']" position="replace">
+                	  <field name="stock_journal_id"  invisible="1"/>
+                </xpath>
+                <xpath expr="/form/header/button[@name='button_cancel']" position="replace">
+                   <button name="button_cancel" invisible="1" string="Huỷ giao hàng" groups="base.group_user" />
+             	</xpath>  
+             	
+                    
+                        
+               
+            </field>
+        </record>   
+        
+       <!-- <record id="view_invoice_form_inherit_form" model="ir.ui.view">
+           <field name="name">account.invoice.select.inherit1</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+            <field name="arch" type="xml">  
+               <xpath expr="//field[@name='period_id']" position="after">
+                	  <field name="so_hoa_don" filter_domain="[('so_hoa_don', 'ilike', self)]"/>
+                	  <field name="lenh_xuat_kho_id" filter_domain="[('lenh_xuat_kho_id', 'ilike', self)]"/>
+                	  <field name="so_quyen" filter_domain="[('so_quyen', 'ilike', self)]"/>
+                </xpath>
+             <xpath expr="//search/group"  position="inside">	            	
+               <filter string="Đơn vị thực hiện" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'haiduong_id'}"/>
+            </xpath> 
+              
+                      
+            </field>
+        </record> -->
+        
+        
+        <!--  bo sung menu -->
+        
+		 <record id="action_picking_tree_chuagiao" model="ir.actions.act_window">
+            <field name="name">PXK chưa giao</field>
+            <field name="res_model">stock.picking.out</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar</field>
+            <field name="domain">[('type','=','out'),('mistake_delivery','!=',True),('state','not in',('done','cancel'))]</field>
+            <field name="context">{'default_type': 'out', 'contact_display': 'partner_address','search_default_tong_khoiluong':1}</field>
+            <field name="search_view_id" ref="stock.view_picking_out_search"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create a delivery order. 
+              </p><p>
+                This is the list of all delivery orders that have to be
+                prepared, according to your different sales orders and your
+                logistics rules.
+              </p>
+            </field>
+        </record>
+        <record id="action_picking_tree_out_view1_waiting12" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="stock.view_picking_out_tree"/>
+            <field name="act_window_id" ref="action_picking_tree_chuagiao"/>
+        </record>
+        <record id="action_picking_tree_out_view2_waiting12" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="stock.view_picking_out_form"/>
+            <field name="act_window_id" ref="action_picking_tree_chuagiao"/>
+        </record>
+        <record id="action_picking_tree_out_view2_waiting_cal12" model="ir.actions.act_window.view">
+            <field eval="3" name="sequence"/>
+            <field name="view_mode">calendar</field>
+            <field name="view_id" ref="stock.stock_picking_out_calendar"/>
+            <field name="act_window_id" ref="action_picking_tree_chuagiao"/>
+        </record>
+		<menuitem action="action_picking_tree_chuagiao" id="menu_action_picking_tree_chuagiao" parent="stock.menu_stock_warehouse_mgmt" sequence="-1" groups="stock.group_stock_manager,stock.group_stock_user,base.nhom_quan_ly_trambanhang_pxk,base.nhom_quan_ly_trambanhang_hoadon,base.nhom_quan_ly_trambanhang_pvc"/>
+		
+		
+		 <record id="action_picking_tree_dagiao" model="ir.actions.act_window">
+            <field name="name">PXK đã giao</field>
+            <field name="res_model">stock.picking.out</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar</field>
+            <field name="domain">[('type','=','out'),('mistake_delivery','!=',True),('state','in',('done','cancel'))]</field>
+            <field name="context">{'default_type': 'out', 'contact_display': 'partner_address'}</field>
+            <field name="search_view_id" ref="stock.view_picking_out_search"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create a delivery order. 
+              </p><p>
+                This is the list of all delivery orders that have to be
+                prepared, according to your different sales orders and your
+                logistics rules.
+              </p>
+            </field>
+        </record>
+        <record id="action_picking_tree_out_view1_waiting123" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="stock.view_picking_out_tree"/>
+            <field name="act_window_id" ref="action_picking_tree_dagiao"/>
+        </record>
+        <record id="action_picking_tree_out_view2_waiting123" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="stock.view_picking_out_form"/>
+            <field name="act_window_id" ref="action_picking_tree_dagiao"/>
+        </record>
+        <record id="action_picking_tree_out_view2_waiting_cal123" model="ir.actions.act_window.view">
+            <field eval="3" name="sequence"/>
+            <field name="view_mode">calendar</field>
+            <field name="view_id" ref="stock.stock_picking_out_calendar"/>
+            <field name="act_window_id" ref="action_picking_tree_dagiao"/>
+        </record>
+		<menuitem action="action_picking_tree_dagiao" id="menu_action_picking_tree_dagiao" parent="stock.menu_stock_warehouse_mgmt" sequence="1" groups="stock.group_stock_manager,stock.group_stock_user,base.nhom_quan_ly_trambanhang_pxk,base.nhom_quan_ly_trambanhang_hoadon,base.nhom_quan_ly_trambanhang_pvc"/>
+		
+        <!--  ket thuc -->  
+        
+        <!--  picking in -->
+        <record id="view_view_picking_form_form23" model="ir.ui.view">
+          <field name="name">stock.picking.in.form23</field>
+            <field name="model">stock.picking.in</field>
+            <field name="inherit_id" ref="stock.view_picking_in_form"/>
+            <field name="arch" type="xml">                  
+	        	<xpath expr="//field[@name='partner_id']"  position="after">	            	
+                       <field name="dv_thuchien"/> 
+	        	</xpath>
+	        	<xpath expr="//field[@name='move_lines']"  position="replace">	            	
+                      <field name="move_lines" context="{'address_in_id': partner_id, 'picking_type': 'in'}" options='{"reload_on_button": true}'>
+	                      <tree  string="Stock Moves" editable="bottom">
+	                      	<field name="check"/>
+		               	    <field name="no"/>
+		               	    <field name="sale_line_id" string="Chi tiết LXH"/>
+		               	    <field name="chitiet_kh" invisible="1"/>
+		                    <field name="product_id" on_change="onchange_product_id(product_id,location_id,location_dest_id, False)" attrs="{'readonly': ['|',('sale_line_id', '!=', False),('chitiet_kh', '!=', False)]}"/>
+		                    <field name="product_qty" on_change="onchange_quantity(product_id, product_qty, product_uom, product_uos)" attrs="{'readonly': ['|',('sale_line_id', '!=', False),('chitiet_kh', '!=', False)]}"/>
+		                    <field name="product_uom" string="Đơn vị" groups="product.group_uom"/>
+		                    <field name="product_uos" string="Đơn vị" groups="product.group_uos" invisible="1"/>
+		                    <field name="doitac_giaohang" attrs="{'readonly': ['|',('sale_line_id', '!=', False),('chitiet_kh', '!=', False)]}"/>
+	               	  		<field name="location_id" string="Kho xuất" />
+		                    <field name="picking_id" invisible="1" />
+		                    <field name="create_date" invisible="1" />
+		                    <field name="date_expected" invisible="1" />
+		                    <field name="location_dest_id" string="Địa điểm đích"/>
+		                    <field name="state"/>
+                		</tree>
+                      </field>
+                
+	        	</xpath>
+       	</field>
+       	</record>
+        <!--  end in -->
+        
+        
+         <record id="view_view_location_tree2_inherit_form1" model="ir.ui.view">
+           <field name="name">stock.location.tree.inherit2</field>
+            <field name="model">stock.location</field>
+            <field name="inherit_id" ref="stock.view_location_tree2"/>
+            <field name="arch" type="xml">                
+	        	<xpath expr="//field[@name='complete_name']"  position="replace">	 
+	        	 	<field name="complete_name" invisible="1"/>
+	        	  	<field name="name"/>
+	        	</xpath>
+        	</field>
+        	</record>
+    </data>
+</openerp>

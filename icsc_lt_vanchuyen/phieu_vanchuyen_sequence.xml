@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        <!--
+    Sequence types for pickings
+    -->
+
+        <record id="seq_type_phieuvc" model="ir.sequence.type">
+            <field name="name">phieu van chuyen</field>
+            <field name="code">icsc.phieu.vanchuyen</field>
+        </record>
+     
+        <!--
+            Sequences for pickings
+        -->
+
+        <record id="seq_phieuvc" model="ir.sequence">
+            <field name="name">phieu van chuyen</field>
+            <field name="code">icsc.phieu.vanchuyen</field>
+            <field name="prefix"></field>
+            <field name="padding">6</field>
+            <field name="company_id" eval="False"/>
+        </record>        
+       
+  
+    </data>
+</openerp>

@@ -1,0 +1,20 @@
+@charset "utf-8";
+.openerp  .oe_form .oe-treeview-table_lt th {  
+  text-align: middle  !important;
+
+}
+
+.openerp th, .openerp td {
+    padding: 0;
+    text-align: middle !important;
+}
+
+
+.openerp .oe_highlight_vanchuyen {
+  color: red;
+
+}
+
+/* .openerp th, .openerp td { */
+/*     text-align: middle  !important; */
+/* } */

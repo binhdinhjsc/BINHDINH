@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    
+        <record id="view_icsc_icsc_pvc_duongsat_form" model="ir.ui.view">
+            <field name="name">icsc.pvc.duongsat.from</field>
+            <field name="model">icsc.pvc.duongsat</field>
+            <field name="arch" type="xml">
+                <form string="Chọn kế hoạch vận chuyển" version="7.0">
+                    <sheet>
+                    <group >
+	                    <group>
+	                     <field name="phieu_vc" readonly="1"  />                          
+                         <field name="congty_vc" readonly="1"  />  
+                         <field name="hopdong_vanchuyen" readonly="1"  />  
+	                    </group>                   
+                     </group>
+                     <field name="line_ids" >
+                     	<tree string="Chi tiết vận chuyển"  editable="bottom" create="0">	
+                     	  <field name="check" /> 	
+		                	<field name="kehoach_id" readonly="1"/> 	  
+		                	<field name="sale_id" readonly="1"/> 
+		                    <field name="khach_hang"   readonly="1"  />  
+		                    <field name="cuoc_tu_diem"  readonly="1" /> 					                   
+		                    <field name="cuoc_den_diem" readonly="1"/>  
+		                    <field name="kl_lan" sum="total"  readonly="1"/>   
+		                     <field name="kl_lannc" sum="total"  readonly="1"/>   
+		                    <field name="kl_npk" sum="total" readonly="1"/>  
+		                    <field name="kl_axit"  sum="total" readonly="1"/>
+		                    <field name="kl_spkhac"  sum="total" readonly="1"/>		                 
+					     </tree>
+		                 <form string="Chi tiết vận chuyển"  vertion="7.0"> 		
+		                	<sheet>			                	
+			                 <group>
+				               <field name="kehoach_id" readonly="1"/> 	  
+			                	<field name="sale_id" readonly="1"/> 
+			                    <field name="khach_hang"   readonly="1"  />  
+			                    <field name="tu_diem"  readonly="1" /> 					                   
+			                    <field name="den_diem" readonly="1"/>  
+			                    <field name="kl_lan" sum="total"  readonly="1"/>   
+			                    <field name="kl_npk" readonly="1"/>  
+			                    <field name="kl_axit" readonly="1"/>
+			                    <field name="kl_spkhac" readonly="1"/>
+			                 </group>                					      	               
+              			   </sheet>             
+		                </form>
+                     </field>
+                     
+                    </sheet>
+                    
+                    <footer>
+                        <div>
+                            <button name="action_update" string="Chọn" type="object" class="oe_highlight"/> or
+                            <button special="cancel" string="Hủy" class="oe_link"/>
+                        </div>
+                    </footer>
+                 </form>
+            </field>
+        </record>  
+	 
+	<record id="action_icsc_chon_kehoach_update" model="ir.actions.act_window">
+               <field name="name">Chọn kế hoạch vận chuyển</field>
+               <field name="type">ir.actions.act_window</field>
+               <field name="res_model">icsc.pvc.duongsat</field>
+               <field name="view_type">form</field>
+               <field name="view_mode">form</field>
+               <field name="context">{'record_id' : active_id}</field>
+               <field name="target">new</field>
+        </record>
+        
+    </data>
+</openerp>

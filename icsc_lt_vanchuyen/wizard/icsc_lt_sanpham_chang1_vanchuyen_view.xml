@@ -1,0 +1,63 @@
+<openerp>
+      <data>
+
+        <record id="view_icsc_lt_chang1" model="ir.ui.view">
+            <field name="name">Danh sách sản phẩm đưa vào kế hoạch vận chuyển</field>
+            <field name="model">icsc.lt.chang1</field>
+            <field name="arch" type="xml">
+                <form string="Danh sách sản phẩm đưa vào kế hoạch vận chuyển" version="7.0" >
+                    <group>  
+                   
+                                
+                        <field name="kehoach_id" />
+                        
+                    </group>
+                     <field name = "line_ids">
+                        
+                            <tree string="Sản phẩm" editable="bottom" create="0">
+                                <field name="chitiet_phieu_id" readonly="1" />
+                                <field name="sale_order_line" readonly="1" />
+                                <field name="product_id" string="Sản phẩm" readonly="1" />
+                                <field name="kl_vc_dukien" readonly="1" />
+                                <field name="kl_vc_kehoach" />
+                                <field name="kl_can_vanchuyen" readonly="1" />
+                                <field name="kl_vc_conlai" readonly="1"  invisible="1"/>
+                                <field name="dia_chi_giao" readonly="1" />
+                                
+                             </tree>
+                            <form string="Sản phẩm" version="7.0" >
+                                <field name="chitiet_phieu_id" readonly="1" />
+                                <field name="sale_order_line" readonly="1" />
+                                <field name="product_id" string="Sản phẩm" readonly="1" />
+                                <field name="kl_vc_dukien" readonly="1" />
+                                <field name="kl_vc_kehoach" />
+                                <field name="kl_can_vanchuyen" readonly="1" />
+                                <field name="kl_vc_conlai" readonly="1" />
+                                <field name="dia_chi_giao" readonly="1" />
+                            </form>
+                        </field>
+                    <footer>
+                        <button name="tao_phieu" string="Đồng ý" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Hủy bỏ" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_icsc_lt_chang1" model="ir.actions.act_window">
+               <field name="name">Danh sách sản phẩm đưa vào kế hoạch vận chuyển</field>
+               <field name="type">ir.actions.act_window</field>
+               <field name="res_model">icsc.lt.chang1</field>
+               <field name="view_type">form</field>
+               <field name="view_mode">form</field>
+               <field name="context">{'record_id' : active_id}</field>
+               <field name="target">new</field>
+        </record>
+        
+       
+     
+</data>
+</openerp>
+
+

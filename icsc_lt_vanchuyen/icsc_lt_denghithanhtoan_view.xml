@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>    
+
+     <record id="icsc_denghithanhtoan_vanchuyen_tree_view" model="ir.ui.view">
+	            <field name="name">icsc.denghithanhtoan.vanchuyen.tree</field>
+	            <field name="model">icsc.denghithanhtoan.vanchuyen</field>
+	            <field name="priority">4</field>
+	            <field name="arch" type="xml">
+	                <tree string="Phiếu đề nghị thanh toán" >		
+	                	<field name="name" /> 	                
+	                    <field name="hp_vanchuyen" />   
+	                    <field name="tennha_vanchuyen" /> 	                
+	                    <field name="ngay_thanhtoan" />  
+	                    <field name="amount_vc_total" widget='monetary' />
+		                <field name="amount_vp_total" widget='monetary' />  	 
+		                <field name="amount_total" widget='monetary' />  
+		                <field name="sl_phieu_vc" /> 	                	                
+	                    <field name="state" />  
+	                    
+	                    <field name="daidien_lamthao1" invisible="1"/> 	                
+	                     <field name="daidien_lamthao2" invisible="1"/> 
+	                      <field name="daidien_khachhang1" invisible="1"/> 	    
+	                       <field name="daidien_khachhang2" invisible="1"/> 	    
+	                       	                        	                  		                 
+	               </tree>
+	             </field>
+	     </record>
+	   <record id="icsc_denghithanhtoan_vanchuyen_form_view" model="ir.ui.view">
+	           <field name="name">icsc.denghithanhtoan.vanchuyen.form</field>
+	            <field name="model">icsc.denghithanhtoan.vanchuyen</field>
+	            <field name="priority">4</field>
+	            <field name="arch" type="xml">
+	                <form string="Phiếu đề nghị thanh toán" version="7.0">	 
+	                  <header>   
+                        <button name="action_confirm" string="Xác nhận" type="object" states="draft" class="oe_highlight" />
+                        <button name="action_done" string="Hoàn tất" type="object" states="draft,confirm" />
+             		    <button name="action_cancel" states="draft,confirm,done" string="Hủy phiếu" type="object" />
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirm,done" statusbar_colors='{"cancel":"red","confirm":"blue"}'/>
+               		 </header>              
+	                 <sheet>
+		                 <group>
+			                   <group>			                   
+			                     	                      
+			                      <field name="name" /> 			                      
+			                      <field name="tennha_vanchuyen" on_change="onchange_nhavc(tennha_vanchuyen)"/>
+			                      <field name="hp_vanchuyen" />	 			
+			                     
+			                      
+			                   </group>
+			                   <group>                    			                       
+			                       <field name="ngay_thanhtoan" /> 
+			                       <field name="thanhtoan_tungay" /> 
+			                       <field name="thanhtoan_denngay" /> 		                        
+			                      		                    		                       
+			                   </group>
+		                 </group>	
+		                  <separator  string="Đại diện Lâm Thao"/>
+		             	 <group>
+			             	   <group>
+			             	   		  <field name="daidien_lamthao1" on_change="onchange_chucvu_daidien1(daidien_lamthao1)"/> 
+				                      <field name="daidien_lamthao2" on_change="onchange_chucvu_daidien2(daidien_lamthao2)"/> 			
+				               </group>
+			                   <group>                  			                       
+			                      <field name="chucvu_lamthao1" />			                   	 
+			                      <field name="chucvu_lamthao2" /> 
+			                   </group>	             	   
+		             	  </group>
+		             	   <separator  string="Đại diện đơn vị vận chuyển"/>
+		             	    <group>
+			             	   <group>
+			             	   		  <field name="daidien_khachhang1" on_change="onchange_chucvu1(daidien_khachhang1)"/> 
+				                      <field name="daidien_khachhang2" on_change="onchange_chucvu2(daidien_khachhang2)" /> 			
+				               </group>
+			                   <group>                  			                       
+			                      <field name="chucvu_khachhang1" />			                   	 
+			                      <field name="chucvu_khachhang2" /> 
+			                   </group>	             	   
+		             	  </group>
+		             	  
+		                   <notebook>			               
+			                 <page name="thongtin" string="Danh sách phiếu vận chuyển được đề nghị">
+			                  		<div class="oe_right oe_button_box" name="buttons">
+						                		<button name="action_taithongtin" type="object"
+					                                string="Tải PVC và Phiếu vi phạm VC" icon="gtk-execute"						                                		                               
+					                              attrs="{'invisible': [('state','=','cancel')]}"  />
+					                		 </div>
+			                         <field name="chitiet_denghi" > 
+			                         <tree string="Chi tiết phiếu"  create="0">		
+					                	                
+					                    <field name="so_phieu_vc" />
+					                   
+					                    <field name="ngay_vc" /> 
+					                    <field name="tong_tien"  sum="total" /> 
+					                     <field name="name" /> 	   
+					                </tree>
+					                 <form string="Chi tiết"  vertion="7.0"> 		
+					                	<sheet>
+							                 <group>
+								                 <group>
+								                    <field name="so_phieu_vc" /> 								                    	                
+								                    <field name="ngay_vc" /> 								                           
+											      </group>
+								                   <group>
+								                        <field name="name" />
+								                    	<field name="tong_tien" sum="total" />								                   
+								                   </group>
+							                 </group>	
+		                 					                
+	                					 </sheet> 
+	              					
+					                </form>
+			                      </field>  
+			                       <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
+		                                <field name="amount_vc_total" widget='monetary' />
+		                                <field name="amount_vp_total" widget='monetary' />
+		                                 <field name="sl_phieu_vc" string="Tổng số phiếu vận chuyển"/> 	
+<!-- 		                                <div class="oe_subtotal_footer_separator oe_inline"> -->
+<!-- 		                                    <label for="amount_total" />                                    -->
+<!-- 		                                </div> -->
+<!-- 		                                <field name="amount_total" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary' /> -->
+		                            </group>
+                            <div class="oe_clear"/>		
+			                       <field name="ly_do"  placeholder="Diễn giải"/>       	  
+			                 </page>
+			                 <page name="vipham" string="Danh sách phiếu vi phạm được đề nghị" >
+			                   
+			                     <field name="chitiet_denghi_vipham" > 
+			                        <tree string="Chi tiết phiếu" >	
+					                	<field name="so_phieu_vc" />					                   
+					                    <field name="ngay_vipham" /> 
+					                    <field name="tong_tien"  sum="total" /> 
+					                     <field name="name" /> 	   
+					                 </tree>
+					                 <form string="Chi tiết"  vertion="7.0"> 		
+					                	<sheet>
+							                 <group>
+								                 <group>
+								                    <field name="so_phieu_vc" /> 								                    	                
+								                    <field name="ngay_vipham" /> 								                           
+											      </group>
+								                   <group>
+								                        <field name="name" />
+								                    	<field name="tong_tien" sum="total" />								                   
+								                   </group>
+							                 </group>			                 					                
+	                					 </sheet> 	              
+					                </form> 
+			                      </field>  
+			                  </page>	
+			                                   
+		                 </notebook>
+		           	               
+	                 </sheet> 
+	              <div class="oe_chatter"><field name="message_ids" widget="mail_thread"/></div>
+	                </form>
+   				 </field>
+			 </record>     
+	    <record id="actionicsc_denghithanhtoan_vanchuyen_calendar" model="ir.ui.view">
+            <field name="name">icsc.denghithanhtoan.vanchuyen.calendar</field>
+            <field name="model">icsc.denghithanhtoan.vanchuyen</field>
+            <field name="priority" eval="2"/>
+            <field name="arch" type="xml">
+            <calendar string="Phiếu đề nghị thanh toán" color="hp_vanchuyen"  date_start="ngay_thanhtoan"  >
+                      <field name="name"/>   
+                      <field name="hp_vanchuyen"/>                                     
+                   
+             </calendar>
+            </field>
+        </record>
+         <record id="action_icsc_denghithanhtoan_vanchuyen_list" model="ir.ui.view">
+            <field name="name">icsc.denghithanhtoan.vanchuyen.list.select</field>
+            <field name="model">icsc.denghithanhtoan.vanchuyen</field>
+            <field name="arch" type="xml">
+                <search string="Phiếu đề nghị thanh toán">
+                    <field name="name" string="Số phiếu" filter_domain="['|',('name','ilike',self),('hp_vanchuyen','ilike',self)]"/>
+                    
+                    <separator/>
+                    <filter icon="terp-document-new" string="Chưa xử lý" name="draft" domain="[('state','in',('draft',))]" help="Sales Order that haven't yet been confirmed"/>
+                    <filter icon="terp-check" string="Xác nhận" name="confirm" domain="[('state','in',('confirm',))]"/>
+                    <filter icon="terp-dolar_ok!" string="Đã xử lý" domain="[('state','=','done')]" />
+                    <filter icon="terp-dolar_ok!" string="Hủy" domain="[('state','=','cancel')]" />
+                    <separator/>                 
+                   
+                    <field name="hp_vanchuyen"/>
+                    <field name="tennha_vanchuyen"/>                
+                    <group expand="0" string="Nhóm theo...">
+                        <filter string="Hợp đồng vận chuyển" icon="terp-personal" domain="[]" context="{'group_by':'hp_vanchuyen'}"/>
+                        <filter string="Trạng thái" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'state'}"/>
+                        <filter string="Nhà vận chuyển" icon="terp-go-month" domain="[]" context="{'group_by':'tennha_vanchuyen'}"/>
+                        <filter string="Đại diện Lâm Thao 1" icon="terp-go-month" domain="[]" context="{'group_by':'daidien_lamthao1'}"/>
+                      	<filter string="Đại diện Lâm Thao 2" icon="terp-go-month" domain="[]" context="{'group_by':'daidien_lamthao2'}"/>
+                    	   <filter string="Đại diện khách hàng 1" icon="terp-go-month" domain="[]" context="{'group_by':'daidien_khachhang1'}"/>
+                      <filter string="Đại diện khách hàng 2" icon="terp-go-month" domain="[]" context="{'group_by':'daidien_khachhang2'}"/>
+                    </group>
+               </search>
+            </field>
+        </record>		 
+	<record id="action_icsc_denghithanhtoan_vanchuyen" model="ir.actions.act_window">
+            <field name="name">Phiếu đề nghị thanh toán</field>
+            <field name="res_model">icsc.denghithanhtoan.vanchuyen</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar</field>   
+			 <field name="search_view_id" ref="action_icsc_denghithanhtoan_vanchuyen_list"/>    
+           
+    </record>
+   <menuitem id="menu_action_icsc_denghithanhtoan_vanchuyen" action="action_icsc_denghithanhtoan_vanchuyen" name="Phiếu đề nghị thanh toán" parent="menu_vanchuyen" sequence="9" groups="base.nhom_quan_ly_vanchuyen_ketqua"/>
+ </data>
+</openerp>

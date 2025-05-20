@@ -1,0 +1,2111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>    
+    <!--dieu kien van chuyen -->
+           	<record id="icsc_hopdong_vanchuyen_dieukien_tree_view" model="ir.ui.view">
+	            <field name="name">icsc.hopdong.vanchuyen.dieukien.tree</field>
+	            <field name="model">icsc.hopdong.vanchuyen.dieukien</field>
+	            <field name="priority">4</field>
+	            <field name="arch" type="xml">
+	                <tree string="Điều kiện đảm bảo vận chuyển"  editable="bottom" >		
+	                	<field name="name" /> 	                
+	                    <field name="description" placeholder="Diễn giải"/>                    	                  		                 
+	                   
+	                </tree>
+	             </field>
+	          </record>
+			        
+	     	<record id="icsc_hopdong_vanchuyen_dieukien_view" model="ir.ui.view">
+	            <field name="name">icsc.hopdong.vanchuyen.dieukien.form</field>
+	            <field name="model">icsc.hopdong.vanchuyen.dieukien</field>
+	            <field name="arch" type="xml">
+	                <form string="Điều kiện đảm bảo vận chuyển" version="7.0">
+	                    <field name="name" /> 	                
+	                    <field name="description" placeholder="Diễn giải"/>        
+	              
+	                </form>
+   				 </field>
+			 </record>         
+        
+         <record id="action_icsc_hopdong_vanchuyen_dieukien" model="ir.actions.act_window">
+            <field name="name">Điều kiện đảm bảo vận chuyển</field>
+            <field name="res_model">icsc.hopdong.vanchuyen.dieukien</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>          
+           
+        </record>
+  
+  <!--hop dong van chuyen -->
+  		<record id="action_icsc_hopdong_vanchuyen_tree_view_calendar" model="ir.ui.view">
+               <field name="name">icsc.hopdong.vanchuyen.calendar</field>
+	            <field name="model">icsc.hopdong.vanchuyen</field>
+	            <field name="priority">4</field>
+	            <field name="arch" type="xml">
+	            <calendar string="Hợp đồng vận chuyển" color="congty_vc"  date_start="ngay_ki"  >
+	                      <field name="name"/>   
+	                      <field name="ngay_ki"/>                                     
+	                   
+	             </calendar>
+	            </field>
+        </record>
+          <record id="action_icsc_hopdong_vanchuyen_list" model="ir.ui.view">
+            <field name="name">icsc.hopdong.vanchuyen.list</field>
+	            <field name="model">icsc.hopdong.vanchuyen</field>
+            <field name="arch" type="xml">
+                <search string="Hợp đồng vận chuyển">
+                    <field name="name" string="Số hợp đồng" filter_domain="['|',('name','ilike',self),('congty_vc','ilike',self)]"/>
+                    <separator/>
+                    <filter icon="terp-document-new" string="Bản dự thảo" name="draft" domain="[('state','in',('draft',))]" help="Sales Order that haven't yet been confirmed"/>
+                    <filter icon="terp-check" string="Xác nhận" name="confirm" domain="[('state','in',('confirm',))]"/>
+                    <filter icon="terp-dolar_ok!" string="Đã xử lý" domain="[('state','=','done')]" />
+                    <filter icon="terp-dolar_ok!" string="Hủy" domain="[('state','=','cancel')]" />
+                    <separator/>                 
+                   
+                    <field name="congty_vc"/>                             
+                    <group expand="0" string="Nhóm theo...">
+                        <filter string="Công ty vận chuyển" icon="terp-personal" domain="[]" context="{'group_by':'congty_vc'}"/>
+                        <filter string="Trạng thái" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'state'}"/>
+                        <filter string = "Số hợp đồng" icon ="" domain ="[]" context = "{'group_by' : 'name'}"/>
+                          <filter string = "KL vận chuyển tối thiểu/Ngày" icon ="" domain ="[]" context = "{'group_by' : 'kvvc_toithieu_ngay'}"/>
+                          <filter string = "KL vận chuyển tối thiểu/Chuyến" icon ="" domain ="[]" context = "{'group_by' : 'kvvc_toithieu_chuyen'}"/>
+                          <filter string = "KL vận chuyển tối đa/Ngày" icon ="" domain ="[]" context = "{'group_by' : 'kvvc_toida_ngay'}"/>
+                          <filter string = "KL vận chuyển tối đa/Chuyến" icon ="" domain ="[]" context = "{'group_by' : 'kvvc_toida_chuyen'}"/>
+                        <filter string = "Số thanh lý hợp đồng" icon = "" domain ="[]" context ="{'group_by' : 'so_thanhly'}"/>
+                        <!-- <filter string="Điều kiện đảm bảo" icon="terp-go-month" domain="[]" context="{'group_by':'dieukien_dambao'}"/> -->
+
+                      
+                    </group>
+               </search>
+            </field>
+        </record>	
+           	<record id="icsc_hopdong_vanchuyen_tree_view" model="ir.ui.view">
+	            <field name="name">icsc.hopdong.vanchuyen.tree</field>
+	            <field name="model">icsc.hopdong.vanchuyen</field>
+	            <field name="priority">4</field>
+	            <field name="arch" type="xml">
+	                  <tree string="Hợp đồng vận chuyển" >		
+	                	<field name="name" /> 	                
+	                    <field name="congty_vc" />   
+	                    <field name="ngay_ki" /> 	                
+	                    <field name="ngay_hieuluc" />    
+	                    <field name="ngay_kethuc" /> 
+	                    <field name="tu_dong" />   	                
+	                    <field name="state" />   
+	                 	                
+	                    <field name="dieukien_dambao" invisible="1"/> 
+	                    <field name="kvvc_toithieu_ngay" invisible="1"/> 
+			            <field name="kvvc_toithieu_chuyen" invisible="1"/> 
+			            <field name="kvvc_toida_ngay" invisible="1"/> 	
+			            <field name="kvvc_toida_chuyen" invisible="1"/>			                    
+			            <field name="so_thanhly" invisible="1"/>      	                  		                 
+	                   
+	                </tree>
+	             </field>
+	          </record>
+			        
+	     	<record id="icsc_icsc_hopdong_vanchuyen_view" model="ir.ui.view">
+	            <field name="name">icsc.hopdong.vanchuyen.form</field>
+	            <field name="model">icsc.hopdong.vanchuyen</field>
+	            <field name="priority">2</field>
+	            <field name="arch" type="xml">
+	                <form string="Hợp đồng vận chuyển" version="7.0">
+	                  <header>   
+	                   <button name="action_return" string="Mở lại hợp đồng" type="object" states="cancel" class="oe_highlight" />                     
+                        <button name="action_confirm" string="Xác nhận" type="object" states="draft" class="oe_highlight" />
+                        <button name="action_done" string="Hoàn tất" type="object" states="confirm" />
+             		    <button name="action_cancel" states="draft,confirm,done" string="Hủy hợp đồng" type="object" />
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirm,done" statusbar_colors='{"cancel":"red","confirm":"blue"}'/>
+               		 </header>
+	                 <sheet>
+		                 <group>
+			                   <group>
+			                      <field name="name" /> 
+			                      <field name="ngay_ki" /> 
+			                      <field name="ngay_hieuluc" /> 			                     
+			                      <field name="kvvc_toithieu_ngay" /> 
+			                     <field name="kvvc_toithieu_chuyen" /> 			                    
+			                  	   <field name="so_thanhly" /> 
+			                     <field name="lydo_thanhly" /> 
+			                     <field name="tong_khoiluong" /> 
+			                    
+			                   </group>
+			                   <group>
+			                      <field name="congty_vc" />			                   	 
+<!-- 			                      <field name="dieukien_dambao" />  -->
+									<field name="dien_giai" />       
+									<field name="ngay_kethuc" /> 			                     
+									<field name="kvvc_toida_ngay" /> 	
+									<field name="kvvc_toida_chuyen" /> 	
+									<field name="ngay_thanhly" />    
+									<field name="check" />  
+									<field name="check_detail" invisible="1"/>            
+			                   </group>
+		                 </group>
+		                 <notebook>			               
+			                 <page name="banggia" string="Thông tin bảng giá theo hợp đồng">
+			                    <field name="chitiet_banggia" >	
+			                   	  <tree string="Thông tin bảng giá"  editable="top">	
+			                   	  		 <field name="banggia_id"  on_change="onchange_banggia_id(banggia_id)" create="0" edit="0" />    	
+					                	<field name="tu_diem" /> 	                
+					                    <field name="den_diem" /> 
+					                   <field name="so_quyet_dinh" /> 	                
+					                    <field name="gia_chua_thue" /> 	                
+					                    <field name="tax_id"/> 	
+					                    <field name="gia_co_thue" /> 
+					                    <field name="ngay_hieu_luc" required="1"/> 	
+					                    <field name="ngay_het_hieu_luc"/>                	                  		                 
+					                      
+					                </tree>
+					                 <form string="Thông tin bảng giá"  vertion="7.0"> 	
+					                   <field name="banggia_id" on_change="onchange_banggia_id(banggia_id)" create="0" edit="0"  />   	
+					                	<field name="tu_diem" /> 	                
+					                    <field name="den_diem" /> 	
+					                    <field name="gia_chua_thue" /> 				                    
+					                    <field name="tax_id"/> 	
+					                    <field name="gia_co_thue"/>
+					                     <field name="so_quyet_dinh" /> 	                
+					                     <field name="ngay_hieu_luc"/> 	
+					                     <field name="ngay_het_hieu_luc" /> 
+					                       
+					                </form>	
+			                     </field>
+			                 </page>
+			       
+			                 
+			                 <page name="thethongtin" string="Thông tin vật tư vận chuyển thuộc hợp đồng" invisible="1">
+			                   <field name="chitiet_vattu" >	
+			                   	  <tree string="Thông tin vật tư " >		
+					                	<field name="product_id" /> 	                
+					                    <field name="loai_san_pham" /> 
+					                    <field name="don_vi"  />    
+					                    <field name="so_luong" sum="total"/>                 
+					                               	                  		                 
+					                   
+					                </tree>
+					                 <form string="Thông tin vật tư "  vertion="7.0"> 		
+					                	<field name="product_id" on_change="onchange_product_id(product_id)"/> 	                
+					                    <field name="loai_san_pham" /> 
+					                    <field name="don_vi"  />    
+					                    <field name="so_luong" sum="total"/>            
+					                </form>	
+			                     </field>
+			                 </page>
+			                  <page name="uyquyen" string="Thông tin ủy quyền" invisible="1">
+			                       <field name="chitiet_uyquyen">
+							             <tree string="Thông tin ủy quyền" >		
+					                	  <field name="loai_uyquyen" />  
+					                	  <field name="ngay" />              
+					                      <field name="nguoi_duoc_uyquyen" /> 	
+					                      <field name="chucvu" />                 
+					                                  	                  		            
+					                      </tree>
+					                   <form string="Thông tin ủy quyền" vertion="7.0">		
+					                	   <field name="loai_uyquyen"  />  
+					                	  <field name="ngay" />              
+					                      <field name="nguoi_duoc_uyquyen" on_change="onchange_nguoi_duoc_uyquyen(nguoi_duoc_uyquyen)" /> 	
+					                      <field name="chucvu" />                 
+					                                  	               	                  		                 
+				                        </form>
+				                   </field>
+			                 </page>	
+			                  <page name="ds_kehoach" string="Kế hoạch vận chuyển">
+				                  <field name="ds_kehoach_vc">
+						             <tree string="Kế hoạch vận chuyển" >		
+				                	  <field name="name" />  
+				                	  <field name="kehoach_cha" />              
+				                      <field name="so_khvc" /> 	
+				                      <field name="sale_id" />                 
+				                      <field name="loai_khvc" />    
+				                      <field name="congty_vc" />   
+				                      <field name="khach_hang" /> 
+				                      <field name="ngay_lap" />    
+				                       <field name="state" />                	                  		            
+				                      </tree>
+				                 <form string="Kế hoạch vận chuyển" vertion="7.0">		
+				                	  <field name="name" />  
+				                	  <field name="kehoach_cha" />              
+				                      <field name="so_khvc" /> 	
+				                      <field name="sale_id" />                 
+				                      <field name="loai_khvc" />    
+				                      <field name="congty_vc" />   
+				                      <field name="khach_hang" /> 
+				                      <field name="ngay_lap" />    
+				                      <field name="state" />           	                  		                 
+			                        </form>
+				                </field>
+						       </page>
+						       <page name="chitiet_banggia_hethan" string="Bảng giá hết hiệu lực">
+			                    <field name="chitiet_banggia_hethan" >	
+			                   	  	<tree string="Thông tin bảng giá" editable="top" >	
+			                   	  		<field name="banggia_id" />    	
+					                	<field name="tu_diem" /> 	                
+					                    <field name="den_diem" /> 
+					                    <field name="so_quyet_dinh" /> 	                
+					                    <field name="gia_chua_thue" /> 	                
+					                    <field name="tax_id"/> 	
+					                    <field name="gia_co_thue" /> 
+					                    <field name="ngay_hieu_luc" /> 	
+					                    <field name="ngay_het_hieu_luc"/>  
+					                                  	                  		                 
+					                </tree>
+					                <form string="Thông tin bảng giá"  vertion="7.0"> 	
+					                   <field name="banggia_id" on_change="onchange_banggia_id(banggia_id)" create="0" edit="0"  />   	
+					                	<field name="tu_diem" /> 	                
+					                    <field name="den_diem" /> 	
+					                  
+					                    <field name="gia_chua_thue" /> 				                    
+					                    <field name="tax_id"/> 	
+					                   
+					                    <field name="gia_co_thue"/>
+					                     <field name="so_quyet_dinh" /> 	                
+					                     <field name="ngay_hieu_luc"/> 	
+					                     <field name="ngay_het_hieu_luc" />    
+					                </form>	
+			                    </field>
+			                 </page>		                
+		                 </notebook>
+		                  <field name="ghi_chu"  placeholder="Điều kiện đảm bảo hợp đồng" />    
+	                 </sheet> 
+	                 
+	             	  <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+	                </form>
+   				 </field>
+			 </record>         
+        
+         <record id="action_icsc_hopdong_vanchuyen" model="ir.actions.act_window">
+            <field name="name">Hợp đồng vận chuyển</field>
+            <field name="res_model">icsc.hopdong.vanchuyen</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>          
+        </record>
+        
+       
+        
+   <menuitem name="Vận chuyển" id="menu_vanchuyen_root" groups="base.group_user" sequence="20"/>
+   
+   
+   <menuitem id="menu_vanchuyen" name="Vận chuyển" parent="menu_vanchuyen_root" sequence="10"/>
+   
+    <menuitem id="menu_nhacungcap" action ="base.action_partner_supplier_form" name="Nhà cung cấp" parent="menu_vanchuyen" sequence="0" groups="base.nhom_quan_ly_danhmucvanchuyen"/>
+    
+     <menuitem id="menu_diemtrungchuyen" action ="icsc_lt_base.action_partner_trungchuyen_form" name="Các điểm trung chuyển" parent="menu_vanchuyen" sequence="0" groups="base.nhom_quan_ly_danhmucvanchuyen"/>
+     
+   <menuitem id="menu_hopdongvanchuyen" action ="action_icsc_hopdong_vanchuyen" name="Hợp đồng vận chuyển" parent="menu_vanchuyen" sequence="1" groups="base.nhom_quan_ly_hdvanchuyen"/>
+<!--bang gia cuoc van chuyen -->
+            <record id="action_icsc_hopdong_vanchuyen_giacuoc_list" model="ir.ui.view">
+            <field name="name">icsc_hopdong_vanchuyen_giacuoc.list</field>
+	            <field name="model">icsc.hopdong.vanchuyen.giacuoc</field>
+            <field name="arch" type="xml">
+                <search string="Bảng giá cước vận chuyển">
+                	<field name="name" string="Tên bảng giá" filter_domain="['|',('name','ilike',self),('loai_vanchuyen','ilike',self)]"/>
+                    <separator/>
+                    <filter icon="" string="Đang hoạt động" name ="check" domain="[('check','=','True')]" />
+                    <filter icon="" string="Chưa hoạt động" name="check" domain="[('check','!=','True')]" />
+                    <filter  string="Số quyết định" name="quyetdinh" domain="[('so_quyet_dinh','!=',False)]" />
+                    <separator/>      
+                   
+                    <field name="loai_vanchuyen"/>       
+                    <group expand="0" string="Nhóm theo...">
+                     <filter string = "Số quyết định"  icon ="" domain ="[]" context = "{'group_by' : 'so_quyet_dinh'}"/>
+                        
+                    	 <filter string = "Nhóm tên bảng giá" icon ="" domain ="[]" context = "{'group_by' : 'nhom_banggia'}"/>
+                       
+                        <filter string = "Tên bảng giá" icon ="" domain ="[]" context = "{'group_by' : 'name'}"/>
+                        
+                        <filter string="Phương thức vận chuyển" icon="" domain="[]" context="{'group_by':'loai_vanchuyen'}" invisible="1"/>
+                        <filter string = "Ngày ban hành" icon ="" domain ="[]" context = "{'group_by' : 'ngay_banhanh'}"/>
+                       <filter string = "Vận chuyển từ điểm" icon ="" domain ="[]" context = "{'group_by' : 'tu_diem'}"/>
+                        <filter string="Vận chuyển đến điểm" icon="" domain="[]" context="{'group_by':'den_diem'}"/>
+                        <filter string = "Đang hoạt động" icon ="" domain ="[('check','=','True')]" context = "{'group_by' : 'check'}"/>
+                         <filter string = "Chưa hoạt động" icon ="" domain ="[('check','!=','True')]" context = "{'group_by' : 'check'}"/>
+                        <filter string = "Mã vùng" icon ="" domain ="[]" context = "{'group_by' : 'ma_vung'}" invisible="1"/>
+                    </group>
+               </search>
+            </field>
+        </record>	
+            
+           	<record id="icsc_icsc_hopdong_vanchuyen_giacuoc_tree_view" model="ir.ui.view">
+	            <field name="name">icsc_hopdong_vanchuyen_giacuoc.tree</field>
+	            <field name="model">icsc.hopdong.vanchuyen.giacuoc</field>
+	            <field name="priority">4</field>
+	            <field name="arch" type="xml">
+	                  <tree string="Bảng giá cước vận chuyển" >		
+	                	<field name="name" />   
+	                	<field name="nhom_banggia" string="Nhóm"/>               
+	                    <field name="ngay_banhanh" invisible="1"/> 	                
+	                       <field name="so_quyet_dinh" invisible="1"/>   
+	                     <field name="loai_vanchuyen" invisible="1"/>   
+	                    <field name="tu_diem" /> 	                
+	                    <field name="den_diem" /> 
+	                     <field name="quyet_dinh" /> 
+	                        <field name="gia_co_thue" /> 		    
+	                     <field name="check" string="Hoạt động" /> 	
+	                     <field name="ma_vung" invisible="1"/>                	                  		                 
+	                   
+	                </tree>
+	             </field>
+	          </record>
+			        
+	     	<record id="icsc_icsc_hopdong_vanchuyen_giacuoc_view" model="ir.ui.view">
+	            <field name="name">icsc_hopdong_vanchuyen_giacuoc.form</field>
+	            <field name="model">icsc.hopdong.vanchuyen.giacuoc</field>
+	            <field name="arch" type="xml">
+	                <form string="Bảng giá cước vận chuyển" version="7.0">	               
+	                 <sheet>
+	                 	<label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+	                     <div class="oe_title">
+                            
+                            <label for="nhom_banggia" class="oe_edit_only"/>
+                            <h3>
+                               <field name="nhom_banggia" /> 
+                            </h3>
+                        </div>
+		                 <group>
+			                   <group>
+			                     
+			                      <field name="ngay_banhanh" invisible="1"/> 	                     			                     
+			                     
+			                       <field name="tu_diem" on_change='onchange_tudiem(tu_diem,den_diem)'/> 
+			                       <field name="tax_id" /> 		
+			                       <field name="quyet_dinh" /> 			                    
+			                  	   <field name="ma_vung" invisible="1"/> 
+			                       <field name="check" /> 
+			                    
+			                   </group>
+			                   <group>
+			                      <field name="loai_vanchuyen" invisible="1"/> 
+			                    	
+			                       <field name="den_diem" on_change='onchange_dendiem(tu_diem,den_diem)'/> 
+			                       <!--  <field name="gia_thanhtoan" /> 	 -->
+			                         <field name="gia_co_thue" /> 				                     
+			                        <field name="gia_chua_thue" /> 	
+			                        	                          
+			                                      
+			                   </group>
+		                 </group>	
+		                   <field name="chitiet_banggia" context="{'default_tax_id':tax_id}" >  
+		                   <tree string="Bảng giá cước vận chuyển"  editable="top"> 		
+			                	<field name="name" on_change="onchange_quyetdinh(name)"  />                
+			                    <field name="ngay_banhanh" /> 	
+			                    <field name="ngay_hieuluc" on_change="onchange_ngayhieuluc(ngay_hieuluc,ngay_kethuc)"/>                  
+			                    <field name="ngay_kethuc"  on_change="onchange_ngayhieuluc(ngay_hieuluc,ngay_hieuluc)"/>  
+			                    <field name="gia_chua_thue" /> 	
+			                    <field name="tax_id" /> 	                
+			                    <field name="gia_co_thue" />   
+			                    <field name="check" /> 	                	                  		                 
+			                   
+			                </tree>
+		                   </field>            
+	                 </sheet> 
+<!-- 	              	<div class="oe_chatter"><field name="message_ids" widget="mail_thread"/></div> -->
+	                </form>
+   				 </field>
+			 </record>         
+        
+         <record id="action_icsc_hopdong_vanchuyen_giacuoc" model="ir.actions.act_window">
+            <field name="name">Bảng giá cước vận chuyển</field>
+            <field name="res_model">icsc.hopdong.vanchuyen.giacuoc</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>     
+                <field name="context">{'search_default_quyetdinh': 1}</field>     
+           
+        </record>
+        
+        <!--chi tiet bang gia cuoc van chuyen -->
+           	<record id="icsc_icsc_hopdong_vanchuyen_giacuoc_chitiet_tree_view" model="ir.ui.view">
+	            <field name="name">icsc_hopdong_vanchuyen_giacuoc.chitiet.tree</field>
+	            <field name="model">icsc.hopdong.vanchuyen.giacuoc.chitiet</field>
+	            <field name="priority">4</field>
+	            <field name="arch" type="xml">
+	                  <tree string="Bảng giá cước vận chuyển" >	
+	                    <field name="giacuoc_id" />  	
+	                	<field name="name" />                
+	                    <field name="ngay_banhanh" /> 	                
+	                    <field name="ngay_kethuc" />  
+	                     <field name="gia_chua_thue" /> 	
+	                     <field name="tax_id" /> 	                
+	                    <field name="gia_co_thue" />   
+	                    <field name="check" /> 	                	                  		                 
+	                   
+	                </tree>
+	             </field>
+	          </record>
+			        
+	     	<record id="icsc_icsc_hopdong_vanchuyen_giacuocchitiet_view" model="ir.ui.view">
+	            <field name="name">icsc_hopdong_vanchuyen_giacuoc.chitiet.form</field>
+	            <field name="model">icsc.hopdong.vanchuyen.giacuoc.chitiet</field>
+	            <field name="arch" type="xml">
+	                <form string="Bảng giá cước vận chuyển" version="7.0">	               
+	                 <sheet>
+		                 <group>
+			                   <group>
+			                      <field name="name" on_change="onchange_quyetdinh(name)" /> 			                      		                     			                     
+			                      <field name="ngay_hieuluc"  /> 		
+			                      <field name="tax_id" />	                    
+			                  	  <field name="check" /> 
+			                    
+			                   </group>
+			                   <group>
+			                       <field name="ngay_banhanh" />	
+			                       <field name="ngay_kethuc"  /> 			                      
+			                       <field name="gia_co_thue" /> 				                     
+			                       <field name="gia_chua_thue" /> 	
+			                         		                          
+			                                      
+			                   </group>
+		                 </group>	
+		                   	               
+	                 </sheet> 
+	              	<div class="oe_chatter"><field name="message_ids" widget="mail_thread"/></div>
+	                </form>
+   				 </field>
+			 </record>         
+        <record id="action_icsc_hopdong_vanchuyen_giacuocchitiet_search" model="ir.ui.view">
+            <field name="name">icsc.hopdong.vanchuyen.giacuoc.chitiet.search</field>
+	            <field name="model">icsc.hopdong.vanchuyen.giacuoc.chitiet</field>
+            	<field name="arch" type="xml">
+                <search string="Bảng giá cước vận chuyển">
+                	<field name="name" string="Số quyết định" filter_domain="[('name','ilike',self)]"/>
+                    <separator/>
+                    <filter icon="" string="Đang hoạt động" name ="check" domain="[('check','=','True')]" />
+                    <filter icon="" string="Chưa hoạt động" name="check" domain="[('check','!=','True')]" />
+                    <separator/>      
+                    <group expand="0" string="Nhóm theo...">
+                     	<filter string = "Số quyết định"  icon ="" domain ="[]" context = "{'group_by' : 'name'}"/>
+                        <filter string = "Tên bảng giá" icon ="" domain ="[]" context = "{'group_by' : 'giacuoc_id'}"/>
+                        <filter string = "Đang hoạt động" icon ="" domain ="[('check','=','True')]" context = "{'group_by' : 'check'}"/>
+                        <filter string = "Chưa hoạt động" icon ="" domain ="[('check','!=','True')]" context = "{'group_by' : 'check'}"/>
+                    </group>
+               </search>
+            </field>
+        </record>	
+         <record id="action_icsc_hopdong_vanchuyen_giacuoc_chitiet" model="ir.actions.act_window">
+            <field name="name">Bảng giá cước vận chuyển</field>
+            <field name="res_model">icsc.hopdong.vanchuyen.giacuoc.chitiet</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>         
+        </record>
+        <record id="view_action_icsc_hopdong_vanchuyen_giacuoc_chitiet_hieuluc_tree" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="icsc_icsc_hopdong_vanchuyen_giacuoc_chitiet_tree_view"/>
+            <field name="act_window_id" ref="action_icsc_hopdong_vanchuyen_giacuoc_chitiet"/>
+        </record>
+        <record id="view_action_icsc_hopdong_vanchuyen_giacuoc_chitiet_hieuluc_form" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="icsc_icsc_hopdong_vanchuyen_giacuocchitiet_view"/>
+            <field name="act_window_id" ref="action_icsc_hopdong_vanchuyen_giacuoc_chitiet"/>
+        </record>
+        
+        <!--  sap hieu luc -->
+        <record id="icsc_icsc_hopdong_vanchuyen_giacuoc_chitiet_tree_view_sap" model="ir.ui.view">
+	            <field name="name">icsc_hopdong_vanchuyen_giacuoc.chitiet.tree.sap</field>
+	            <field name="model">icsc.hopdong.vanchuyen.giacuoc.chitiet</field>
+	            <field name="priority">4</field>
+	            <field name="arch" type="xml">
+	                  <tree string="Bảng giá cước sắp có hiệu lực" >	
+	                    <field name="giacuoc_id" />  	
+	                	<field name="nhom_banggia" /> 
+	                	<field name="tu_diem" /> 
+	                	<field name="den_diem" /> 
+	                	<field name="name" /> 
+	                	<field name="gia_co_thue" /> 
+	                    <field name="check" invisible="1" /> 	               	                  		                 
+	                </tree>
+	             </field>
+	          </record>
+			        
+         <record id="action_icsc_hopdong_vanchuyen_giacuoc_chitiet_saphieuluc" model="ir.actions.act_window">
+            <field name="name">Bảng giá cước sắp hiệu lực</field>
+            <field name="res_model">icsc.hopdong.vanchuyen.giacuoc.chitiet</field>
+            <field name="view_type">form</field>
+            <field name="domain">[('ngay_hieuluc', '&gt;', current_date),('check', '=', False)]</field>
+            <field name="view_mode">tree,form</field>         
+        </record>
+         <record id="view_action_icsc_hopdong_vanchuyen_giacuoc_chitiet_saphieuluc_tree" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="icsc_icsc_hopdong_vanchuyen_giacuoc_chitiet_tree_view_sap"/>
+            <field name="act_window_id" ref="action_icsc_hopdong_vanchuyen_giacuoc_chitiet_saphieuluc"/>
+        </record>
+        <!-- end sap hieu luc -->
+        <!--  het hieu luc -->
+        <record id="icsc_icsc_hopdong_vanchuyen_giacuoc_chitiet_tree_view_het" model="ir.ui.view">
+	            <field name="name">icsc_hopdong_vanchuyen_giacuoc.chitiet.tree.het</field>
+	            <field name="model">icsc.hopdong.vanchuyen.giacuoc.chitiet</field>
+	            <field name="priority">4</field>
+	            <field name="arch" type="xml">
+	                  <tree string="Bảng giá cước hết hiệu lực" >	
+	                    <field name="giacuoc_id" />  	
+	                	<field name="nhom_banggia" /> 
+	                	<field name="tu_diem" /> 
+	                	<field name="den_diem" /> 
+	                	<field name="name" /> 
+	                	<field name="gia_co_thue" /> 
+	                    <field name="check" invisible="1" /> 	               	                  		                 
+	                </tree>
+	             </field>
+	          </record>
+			        
+         <record id="action_icsc_hopdong_vanchuyen_giacuoc_chitiet_hethieuluc" model="ir.actions.act_window">
+            <field name="name">Bảng giá cước hết hiệu lực</field>
+            <field name="res_model">icsc.hopdong.vanchuyen.giacuoc.chitiet</field>
+            <field name="view_type">form</field>
+            <field name="domain">['|',('ngay_kethuc', '&lt;', current_date),('check', '=', False)]</field>
+            <field name="view_mode">tree,form</field>         
+        </record>
+         <record id="view_action_icsc_hopdong_vanchuyen_giacuoc_chitiet_hethieuluc_tree" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="icsc_icsc_hopdong_vanchuyen_giacuoc_chitiet_tree_view_het"/>
+            <field name="act_window_id" ref="action_icsc_hopdong_vanchuyen_giacuoc_chitiet_hethieuluc"/>
+        </record>
+        <!-- end het hieu luc -->
+    <menuitem id="menu_action_icsc_hopdong_vanchuyen_giacuoc"  name="Bảng giá cước" parent="menu_vanchuyen" sequence="2" groups="base.nhom_quan_ly_giacuocvanchuyen,base.nhom_quan_ly_vanchuyen_nguoidung"/>
+    <menuitem id="menu_action_icsc_hopdong_vanchuyen_giacuoc_hieuluc" action ="action_icsc_hopdong_vanchuyen_giacuoc" name="Hiệu lực" parent="menu_action_icsc_hopdong_vanchuyen_giacuoc" sequence="1" groups="base.nhom_quan_ly_giacuocvanchuyen,base.nhom_quan_ly_vanchuyen_nguoidung"/>
+    <menuitem id="menu_action_icsc_hopdong_vanchuyen_giacuoc_saphieuluc" action ="action_icsc_hopdong_vanchuyen_giacuoc_chitiet_saphieuluc" name="Sắp hiệu lực" parent="menu_action_icsc_hopdong_vanchuyen_giacuoc" sequence="2" groups="base.nhom_quan_ly_giacuocvanchuyen,base.nhom_quan_ly_vanchuyen_nguoidung"/>
+    <menuitem id="menu_action_icsc_hopdong_vanchuyen_giacuoc_hethieuluc" action ="action_icsc_hopdong_vanchuyen_giacuoc_chitiet_hethieuluc" name="Hết hiệu lực" parent="menu_action_icsc_hopdong_vanchuyen_giacuoc" sequence="3" groups="base.nhom_quan_ly_giacuocvanchuyen,base.nhom_quan_ly_vanchuyen_nguoidung"/>
+   
+    <!--bang gia cuoc van chuyen den xa -->
+             <record id="action_icsc_hopdong_vanchuyen_giacuoc_xa_list" model="ir.ui.view">
+                 <field name="name">icsc_hopdong_vanchuyen_giacuoc.xa.list</field>
+	             <field name="model">icsc.hopdong.vanchuyen.giacuoc.xa</field>
+                 <field name="arch" type="xml">
+                 <search string="Bảng giá cước vc đến xã">
+                 <field name="name" string="Số quyết định" filter_domain="['|',('name','ilike',self),('loai_vanchuyen','ilike',self)]"/>
+                     <separator/>
+                    <filter icon="" string="Đang hoạt động" name="check" domain="[('check','=','True')]" />
+                     <filter icon="" string="Chưa hoạt động" name="check" domain="[('check','!=','True')]" />
+                    <separator/>      
+                   
+                   
+                    <field name="ngay_banhanh"/>       
+                    <group expand="0" string="Nhóm theo...">
+                        <filter string = "Số quyết định" icon ="" domain ="[]" context = "{'group_by' : 'name'}"/>
+                        <filter string="Ngày ban hành" icon="" domain="[]" context="{'group_by':'ngay_banhanh'}"/>
+            
+                        <filter string = "Ngày hết hiệu lực" icon ="" domain ="[]" context = "{'group_by' : 'ngay_kethuc'}"/>
+                        <filter string = "Thuế" icon ="" domain ="[]" context = "{'group_by' : 'tax_id'}"/>
+                       <!-- <filter string = "Đơn giá có thuế/tấn" icon ="" domain ="[]" context = "{'group_by' : 'gia_co_thue'}"/>
+                        <filter string = "Giá trước thuế/tấn" icon ="" domain ="[]" context = "{'group_by' : 'gia_chua_thue'}"/>-->
+                         <filter string = "Đang hoạt động" icon ="" domain ="[('check','=','True')]" context = "{'group_by' : 'check'}"/>
+                         <filter string = "Chưa hoạt động" icon ="" domain ="[('check','!=','True')]" context = "{'group_by' : 'check'}"/>
+                        
+                    </group>
+               </search>
+            </field>
+        </record>	
+             
+               
+           	<record id="icsc_icsc_hopdong_vanchuyen_giacuoc_xa_tree_view" model="ir.ui.view">
+	            <field name="name">icsc_hopdong_vanchuyen_giacuoc.xa.tree</field>
+	            <field name="model">icsc.hopdong.vanchuyen.giacuoc.xa</field>
+	            <field name="priority">4</field>
+	            <field name="arch" type="xml">
+	                  <tree string="Bảng giá cước vận chuyển đến xã" >		
+	                	<field name="name" />                
+	                    <field name="ngay_banhanh" /> 	                
+	                    <field name="ngay_kethuc" />    
+	                     <field name="gia_chua_thue" />   
+	                    <field name="tax_id" /> 	                
+	                    <field name="gia_co_thue" />    
+	                     <field name="check" /> 	                 	                  		                 
+	                   
+	                </tree>
+	             </field>
+	          </record>
+			        
+	     	<record id="icsc_icsc_hopdong_vanchuyen_giacuoc_xa_view" model="ir.ui.view">
+	            <field name="name">icsc_hopdong_vanchuyen_giacuoc.xa.form</field>
+	            <field name="model">icsc.hopdong.vanchuyen.giacuoc.xa</field>
+	            <field name="arch" type="xml">
+	                <form string="Bảng giá cước vận chuyển đến xã" version="7.0">	               
+	                 <sheet>
+		                 <group>
+			                   <group>
+			                      <field name="name" /> 
+			                         <field name="ngay_hieuluc" /> 			                     
+			                      <field name="tax_id" /> 	
+			                        <field name="gia_chua_thue" /> 	                     
+			                 </group>
+			                   <group>
+			                      <field name="ngay_banhanh" />		
+			                       <field name="ngay_kethuc" /> 
+			                     <!--   <field name="gia_thanhtoan" /> 	 -->
+			                         <field name="gia_co_thue" /> 	
+			                           <field name="check" /> 	           	                   	 
+			                    
+			                     		                     
+			                      
+			                   </group>
+		                 </group>	
+		                 <field name="dien_giai" placeholder="Diễn giải"/>       	               
+	                 </sheet> 
+	              <div class="oe_chatter"><field name="message_ids" widget="mail_thread"/></div>
+	                </form>
+   				 </field>
+			 </record>         
+        
+         <record id="action_icsc_hopdong_vanchuyen_giacuoc_denxa" model="ir.actions.act_window">
+            <field name="name">Bảng giá cước vận chuyển đến xã</field>
+            <field name="res_model">icsc.hopdong.vanchuyen.giacuoc.xa</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>          
+           
+        </record>
+<!--           <menuitem id="menu_action_icsc_hopdong_vanchuyen_giacuoc_denxa" action ="action_icsc_hopdong_vanchuyen_giacuoc_denxa" name="Bảng giá cước vc đến xã" parent="menu_vanchuyen" sequence="3"/> -->
+ 
+     <!--bang ke hoach van chuyen-->
+     <record id="icsc_icsc_hopdong_vanchuyen_kehoach_tree_view_calendar" model="ir.ui.view">
+            <field name="name">icsc.hopdong.vanchuyen.giacuoc.kehoach.calendar</field>
+            <field name="model">icsc.hopdong.vanchuyen.giacuoc.kehoach</field>
+            <field name="priority" eval="2"/>
+            <field name="arch" type="xml">
+            <calendar string="Kế hoạch vận chuyển" color="sale_id"  date_start="ngay_lap" date_stop="ngay_duyet" >
+                      <field name="name"/>   
+                      <field name="tu_diem"/>
+                      <field name="den_diem"/>                    
+                   
+             </calendar>
+            </field>
+        </record>
+         <record id="icsc_icsc_hopdong_vanchuyen_kehoach_tree_view_list" model="ir.ui.view">
+            <field name="name">icsc.hopdong.vanchuyen.giacuoc.kehoach.list.select</field>
+            <field name="model">icsc.hopdong.vanchuyen.giacuoc.kehoach</field>
+            <field name="arch" type="xml">
+                <search string="Kế hoạch vận chuyển">
+                    <field name="name" string="Mã kế hoạch" filter_domain="['|',('name','ilike',self),('so_khvc','ilike',self)]"/>
+                    <separator/>
+                    <filter icon="" string="Là kế hoạch cha" name="parent_id" domain="[('parent_id','=','True')]"/>
+                    <filter icon="" string="Kế hoạch cha-con" name="kehoach_cha" domain="[('parent_id','!=','True')]"/>
+                    <filter icon="" string="Có trung chuyển" name="trung_chuyen" domain="[('trung_chuyen','=','True')]"/>
+                    <filter icon="" string="Không trung chuyển" name="trung_chuyen" domain="[('trung_chuyen','!=','True')]"/>
+                    <filter icon="terp-document-new" string="Chưa thực hiện" name="draft" domain="[('state','in',('draft',))]" help="Sales Order that haven't yet been confirmed"/>
+                    <filter icon="terp-check" string="Xác nhận" name="confirm" domain="[('state','in',('confirm',))]"/>
+                    <filter icon="terp-dolar_ok!" string="Hoàn tất" domain="[('state','=','done')]" />
+                    <filter icon="terp-dolar_ok!" string="Hủy" domain="[('state','=','cancel')]" />
+                    <separator/>                 
+					<field name="parent_id"/>
+					<field name="khach_hang"/>
+					<field name="tu_diem"/>
+					<field name="den_diem"/>
+					<field name="kehoach_cha"/>
+					<field name="congty_vc"/>
+                    <group expand="0" string="Nhóm theo...">
+                        <filter string="Là kế hoạch cha" icon="" domain="[]" context="{'group_by':'parent_id'}"/>
+                        <filter string="Kế hoạch cha-con" icon="" domain="[]" context="{'group_by':'kehoach_cha'}"/>
+                        <filter string="Trạng thái" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'state'}"/>
+                        <filter string="Ngày lập kế hoạch" icon="terp-go-month" domain="[]" context="{'group_by':'ngay_lap'}"/>
+                        <filter string="Loại kế hoạch vận chuyển" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'loai_khvc'}"/>
+                        <filter string="Phương thức vận chuyển" icon="terp-go-month" domain="[]" context="{'group_by':'phuongthuc_vc'}"/>
+                        <filter string="Lệnh xuất hàng" icon="terp-go-month" domain="[]" context="{'group_by':'sale_id'}"/>
+                        <filter string="Chặng vận chuyển" icon="" domain="[]" context="{'group_by':'chang_khvc'}" />
+                        <filter string="Hợp đồng vận chuyển" icon="" domain="[]" context="{'group_by':'so_khvc'}" />
+                    </group>
+               </search>
+            </field>
+        </record>
+           	<record id="icsc_icsc_hopdong_vanchuyen_kehoach_tree_view" model="ir.ui.view">
+	            <field name="name">icsc.hopdong.vanchuyen.giacuoc.kehoach.tree</field>
+	            <field name="model">icsc.hopdong.vanchuyen.giacuoc.kehoach</field>
+	            <field name="priority">4</field>
+	            <field name="arch" type="xml">
+	                  <tree string="Kế hoạch vận chuyển" >		
+	                	<field name="name" string="LXH - Mã KHVC" />  
+	                	<field name="kehoach_cha"  invisible="1"/> 	                	 
+	                	<field name="congty_vc" />  
+	                	<field name="tu_diem" string="Kho xuất"/> 
+	                	<field name="tong_khoiluong" />                 
+	                    <field name="so_khvc" invisible="1"/> 	
+	                     <field name="sale_id" invisible="1" />                 
+	                    <field name="loai_khvc" string="Loại KHVC"/>    
+	                    <field name="khach_hang" invisible="1"/> 
+	                      <field name="kh_tmp" /> 
+	                    <field name="ngay_lap" /> 
+	                    <field name="chang_khvc" string="Chặng VC" invisible="1"/>    
+	                     <field name="chang_tmp" string="Chặng VC"/> 
+	                    <field name="state" />                  	                  		                 
+	                    <field name="parent_id" invisible="1"/>	                 
+	                     <field name="den_diem" invisible="1"/>	                     
+	                    <field name="kl_dang_vc" invisible="1"/>	                   
+	                   <field name="trung_chuyen" invisible="1"/>
+	                     <field name="phuongthuc_vc" invisible="1"/>
+	                    
+	                </tree>
+	             </field>
+	          </record>
+	         	<record id="icsc_icsc_hopdong_vanchuyen_kehoach_tree_all_view" model="ir.ui.view">
+	            <field name="name">icsc.hopdong.vanchuyen.giacuoc.kehoach.all.tree</field>
+	            <field name="model">icsc.hopdong.vanchuyen.giacuoc.kehoach</field>
+	            <field name="priority">4</field>
+	            <field name="arch" type="xml">
+	                  <tree string="Kế hoạch vận chuyển" >		
+	                	<field name="name" string="LXH - Mã KHVC" />  
+	                	<field name="kehoach_cha"  invisible="1"/> 	                	 
+	                	<field name="congty_vc" />  
+	                	<field name="tu_diem" string="Kho xuất"/> 
+	                	<field name="tong_khoiluong" />                 
+	                    <field name="so_khvc" invisible="1"/> 	
+	                     <field name="sale_id" invisible="1" />                 
+	                    <field name="loai_khvc" string="Loại KHVC"/>    
+	                    <field name="khach_hang" invisible="1"/> 
+	                     <field name="kh_tmp" /> 
+	                    <field name="ngay_lap" /> 
+	                    <field name="chang_khvc" string="Chặng VC" invisible="1"/>    
+	                     <field name="chang_tmp" string="Chặng VC"/> 
+	                    <field name="state" />                  	                  		                 
+	                    <field name="parent_id" invisible="1"/>	                 
+	                     <field name="den_diem" invisible="1"/>	                     
+	                    <field name="kl_dang_vc" invisible="1"/>	                   
+	                   <field name="trung_chuyen" invisible="1"/>
+	                     <field name="phuongthuc_vc" invisible="1"/>
+	                    
+	                </tree>
+	             </field>
+	          </record>
+			  <record id="icsc_icsc_hopdong_vanchuyen_kehoach_tree_view_khongtrungchuyen" model="ir.ui.view">
+	            <field name="name">icsc.hopdong.vanchuyen.giacuoc.kehoach.tree.khongtrungchuyen</field>
+	            <field name="model">icsc.hopdong.vanchuyen.giacuoc.kehoach</field>
+	            <field name="priority">4</field>
+	            <field name="arch" type="xml">
+	                  <tree string="Kế hoạch vận chuyển" >		
+	                	<field name="name" string="LXH - KHVC" />  
+	                	<field name="kehoach_cha" invisible="1"/>  
+	                	<field name="congty_vc" /> 
+	                	<field name="tu_diem" string="Kho xuất"/> 
+	                	<field name="tong_khoiluong" />                      
+	                    <field name="so_khvc" invisible="1"/> 	
+	                     <field name="sale_id" invisible="1"/>                 
+	                    <field name="loai_khvc" string="Loại KHVC"/>    
+	                    <field name="khach_hang" /> 
+	                    <field name="ngay_lap" string ="Ngày lập" /> 
+	                     <field name="chang_khvc" invisible="1"/>    
+	                    <field name="state" />                  	                  		                 
+	                    <field name="parent_id" invisible="1"/>	                 
+	                     <field name="den_diem" invisible="1"/>	                
+	                    <field name="kl_dang_vc" invisible="1"/>	                   
+	                   <field name="trung_chuyen" invisible="1"/>
+	                     <field name="phuongthuc_vc" invisible="1"/>
+	                    
+	                </tree>
+	             </field>
+	          </record> 
+	           <record id="icsc_icsc__kehoach_chitiet_tree_view_trungchuyen" model="ir.ui.view">
+	            <field name="name">icsc.hopdong.vanchuyen.chitiet.tree</field>
+	            <field name="model">icsc.hopdong.vanchuyen.chitiet</field>
+	            <field name="priority">4</field>
+	            <field name="arch" type="xml">
+	                 <tree string="Chi tiết vận chuyển"  create="0" >		
+	                	<field name="name" /> 	  
+	                	<field name="sale_order_line" />              
+	                    <field name="product_id" /> 
+	                    <field name="kl_vc_dukien"  sum="total" string="Kl vận chuyển dự kiến"  /> 
+	                    <field name="kl_vc_kehoach" sum="total" string="KL KH"/> 					                   
+	                    <field name="kl_dangvc_dukien"  sum="total" />    
+	                     <field name="dia_chi_giao" />  		                 
+					 </tree>
+					 
+	             </field>
+	          </record>  
+	            <record id="icsc_icsc__kehoach_chitiet_tree_view_trungchuyen" model="ir.ui.view">
+	            <field name="name">icsc.hopdong.vanchuyen.chitiet.form</field>
+	            <field name="model">icsc.hopdong.vanchuyen.chitiet</field>
+	            <field name="priority">4</field>
+	            <field name="arch" type="xml">
+	                
+	                 <form string="Chi tiết vận chuyển"  version="7.0"> 		
+	                	<sheet>		                	
+			                 <group>
+				                 <group>				                     
+				                      <field name="name" /> 
+				                       <field name="kl_vc_dukien" readonly="1" string="Kl vận chuyển dự kiến" /> 
+				                      <field name="kl_vc_kehoach" string="KL KH"/> 
+				                     	<field name="kl_dangvc_dukien" />                      
+				                  </group>
+				                   <group>
+				                      <field name="product_id" />			                   	 
+				                      <field name="kl_can_vanchuyen" readonly="1" /> 
+				                       <field name="kl_vc_conlai" invisible="1" /> 		                     
+				                       <field name="dia_chi_giao" /> 	
+				                   </group>
+			                 </group>	
+               					      	               
+             			 </sheet> 
+           
+	                </form>
+	             </field>
+	          </record>       
+	     	<record id="icsc_icsc_hopdong_vanchuyen_kehoach_view" model="ir.ui.view">
+	            <field name="name">icsc.hopdong.vanchuyen.giacuoc.kehoach.form</field>
+	            <field name="model">icsc.hopdong.vanchuyen.giacuoc.kehoach</field>
+	            <field name="arch" type="xml">
+	                <form string="Kế hoạch vận chuyển" version="7.0">	 
+	                  <header>   
+	                    <button name="action_return" string="Mở lại kế hoạch" type="object" states="cancel" class="oe_highlight" />                     
+                        <button name="action_confirm" string="Xác nhận" type="object" states="draft" class="oe_highlight" />
+<!--                        <button name="action_process" string="Đang vận chuyển" type="object" states="confirm" /> -->
+<!--                         <button name="action_done" string="Hoàn tất" type="object" states="process" /> -->
+             		    <button name="action_cancel" states="confirm,process,done" string="Hủy kế hoạch" type="object" />
+                         <button name="%(action_icsc_kehoach_update)d"  string="Sửa kế hoạch" type="action"
+                         attrs="{'invisible': ['|',('state','not in',('process','confirm','done')),('kehoach_cha','!=',False)]}" 
+                         groups="icsc_lt_vanchuyen.nhom_quan_ly_vanchuyen_chinhsua" />
+                          <button name="%(action_icsc_kehoach_update_chang1)d"  string="Sửa kế hoạch" type="action"
+                         attrs="{'invisible': ['|','|',('state','not in',('process','confirm','done')),('trung_chuyen','=',False),('parent_id','=',True)]}" 
+                         groups="icsc_lt_vanchuyen.nhom_quan_ly_vanchuyen_chinhsua" />
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirm,process,done" statusbar_colors='{"cancel":"red","confirm":"blue"}'/>
+               		 </header>              
+	                 <sheet>
+	                 <group>
+		                  <group>
+		                      <field name="trung_chuyen"/> 
+		                      <field name="ngoai_le" invisible="1"/> 
+		                  </group>
+		                   <group>
+		                   	<field name="chang_khvc"  attrs="{'invisible': ['|',('trung_chuyen','=',False),('parent_id','=',True)],'required': [('trung_chuyen','=',True),('parent_id','=',False)]}" />  
+		                  </group>
+	                 </group>
+		                 <group>
+			                   <group>
+			                   
+			                      <field name="parent_id" attrs="{'invisible': ['|',('trung_chuyen','=',False),('kehoach_cha','!=',False)]}"/> 
+			                      <field name="name" /> 
+			                       <field name="congty_vc" on_change="load_hopdong(congty_vc)" attrs="{'invisible': [('parent_id','=',True)],'required': [('parent_id','=',False)]}"  />
+			                      <field name="so_khvc" attrs="{'invisible': [('parent_id','=',True)]}" /> 
+			                      <field name="khach_hang" attrs="{'invisible': [('trung_chuyen','=',True),('parent_id','=',False)]}" on_change="onchange_khach_hang(khach_hang)" /> 
+			                      <field name="dia_chi_khach_hang"  attrs="{'invisible': [('trung_chuyen','=',True),('parent_id','=',False)]}" /> 	
+			                      <field name="la_khach_hang" on_change="onchange_la_khach_hang(la_khach_hang, sale_id, cuoc_den_diem, khach_hang)" attrs="{'invisible': ['|',('parent_id','=',True),('trung_chuyen','=',False)]}"  /> 		                                          
+			                 	  <field name="donvi_nhanhang" on_change="onchange_khach_hang_con(donvi_nhanhang)" attrs="{'invisible': ['|','|',('la_khach_hang','=',True),('parent_id','=',True),('trung_chuyen','=',False)]}"/> 
+			                 	  <field name="dia_chi_khach_hang_con" attrs="{'invisible': ['|','|',('la_khach_hang','=',True),('parent_id','=',True),('trung_chuyen','=',False)]}"/> 	
+			                	  <field name="nhan_hang_tn" attrs="{'invisible': [('parent_id','=',True),('kehoach_cha','=',False)]}" /> 
+			                 	  <field name="nhan_hang_dn" attrs="{'invisible': [('parent_id','=',True),('kehoach_cha','=',False)]}"/>
+			                 </group>
+			                 <group>			                    
+			                     <field name="kehoach_cha" on_change="onchange_parent_id(kehoach_cha,chang_khvc)" attrs="{'invisible': ['|',('trung_chuyen','=',False),('parent_id','=',True)],'required': [('trung_chuyen','=',True),('parent_id','=',False)]}"/>	
+			                     <field name="sale_id" on_change="onchange_sale_id(sale_id,parent_id,trung_chuyen,la_khach_hang,chang_khvc,name)"
+			                     					   domain="[('loai_lenh_vc','=','vanchuyen'),('state','in',('sent','waiting_date'))]"/> 			                       
+			                     <field name="ngay_tao" /> 	
+			                     <field name="tao_khvc_ngoaile" invisible="1"/>			                   	 
+			                     <field name="loai_khvc"  string="Loại kế hoạch vận chuyển" attrs="{'required': [('trung_chuyen','=',False)]}"/> 	
+			                     <field name="phuongthuc_vc" on_change="onchange_phuongthuc_vc(phuongthuc_vc)" /> 	
+			                     <field name="donvi_thuchien" /> 
+			                     <field name="kl_dang_vc" invisible="1"/>
+			                     <field name="ngay_lap"/> 				                                       
+			                   	 <field name="kiem_soat" />
+			                   	 <field name="giam_sat_kho"/>
+			                   </group>
+		                 </group>	
+		                   <notebook>			               
+			                 <page name="thongtin" string="Thông tin cước">
+			                 	<div class="oe_right oe_button_box" name="buttons">
+						                		<button name="%(action_icsc_diem_tinhcuoc_update)d" type="action"
+					                                string="Điểm tính cước" icon="gtk-execute"		
+					                                 attrs="{'invisible': [('parent_id','=',True)]}"		                               
+					                               />
+					                		 </div>
+					             <separator string="Thông tin cước" />  		 
+			                      <group>
+					                    <group>
+						                      <field name="state_pheduyet" invisible="1"/> 
+						                      <field name="nguoi_duyet" invisible="1"/> 
+						                      <field name="tu_diem" /> 				                      
+						                      <field name="cuoc_tu_diem" attrs="{'invisible': [('parent_id','=',True),('kehoach_cha','=',False)]}" /> 						                     
+						                      <field name="tinh_denxa" attrs="{'invisible': [('parent_id','=',True),('kehoach_cha','=',False)]}" invisible="1"/> 			                                          
+						                 	 
+						                 </group>
+						                 <group>
+						                      <field name="diem_trung_chuyen" on_change="onchange_diem_trung_chuyen(diem_trung_chuyen)" attrs="{'invisible': [('chang_khvc','!=','chang_1')]}"/> 	
+						                      <field name="den_diem" /> 
+						                      <field name="cuoc_den_diem"  attrs="{'invisible': [('parent_id','=',True),('kehoach_cha','=',False)]}" /> 			          
+						                      <field name="ngay_duyet" invisible="1"/>			                   	 
+						                       
+						                        		                     
+						                      
+						                  </group>
+		              			   </group>	
+			                 				<div class="oe_right oe_button_box" name="buttons">
+						                		<button name="%(action_icsc_lt_chitiet_sanpham)d" type="action"
+					                                string="Tải sản phẩm vận chuyển" icon="gtk-execute"		
+					                                 attrs="{'invisible': ['|','|',('trung_chuyen','=',False),('parent_id','=',False),('state','!=','draft')]}"		                               
+					                               />
+					                		 </div>
+					                		 <div class="oe_right oe_button_box" name="buttons">
+						                		<button name="action_load_tu_cha" type="object"
+					                                string="Tải thông tin từ kế hoạch cha" icon="gtk-execute"	
+					                                attrs="{'invisible': ['|','|',('kehoach_cha','=',False),('state','!=','draft'),('chang_khvc','!=','chang_2')]}"			                               
+					                               />
+					                		 </div>
+					                		  <div class="oe_right oe_button_box" name="buttons">
+						                		<button name="%(action_icsc_lt_chang1)d" type="action"
+					                                string="Tải thông tin chặng 1 từ KHVC cha" icon="gtk-execute"	
+					                                attrs="{'invisible': ['|','|',('kehoach_cha','=',False),('state','!=','draft'),('chang_khvc','!=','chang_1')]}"			                               
+					                               />
+					                		 </div>
+					                		 <div class="oe_right oe_button_box" name="buttons">
+						                		<button name="%(action_icsc_lt_chitiet_sanpham_khongtrungchuyen)d" type="action"
+					                                string="Tải sản phẩm vận chuyển" icon="gtk-execute"		
+					                                 attrs="{'invisible': ['|',('trung_chuyen','=',True),('state','!=','draft')]}"		                               
+					                               />
+					                		 </div>
+					              <separator string="Thông tin vật tư vận chuyển" />  		 
+			                      <field name="chitiet_kh" > 
+			                          <tree string="Chi tiết vận chuyển"  name="chitiet_tree" create="0" >		
+					                	<field name="name" /> 	  
+					                	<field name="sale_order_line" />              
+					                    <field name="product_id" /> 
+					                    
+					                     <field name="kl_vc_dukien"  invisible="1" string="Kl vận chuyển dự kiến"  /> 
+					                    
+					                 
+					                    <field name="kl_vc_kehoach" sum="total" string="KL KH"/> 					                   
+					                    <field name="kl_dangvc_dukien"  sum="total" string="KL đang VC" />    
+					                     <field name="kl_vc_conlai" string="KL còn lại" sum="total"/> 		
+					                     <field name="dia_chi_giao" invisible="1" />  		                 
+									 </tree>
+									<form string="Chi tiết vận chuyển"  version="7.0"> 		
+						                	<sheet>
+							                	
+								                 <group>
+									                 <group>
+									                     
+									                      <field name="name" /> 
+									                       <field name="kl_vc_dukien"  invisible="1" readonly="1" string="Kl vận chuyển dự kiến" /> 
+									                      <field name="kl_vc_kehoach" string="KL KH"/> 
+									                     	<field name="kl_dangvc_dukien"  string="KL đang VC" />                      
+									                  </group>
+									                   <group>
+									                      <field name="product_id" />			                   	 
+									                      <field name="kl_can_vanchuyen" readonly="1" /> 
+									                       <field name="kl_vc_conlai" string="KL còn lại" /> 		                     
+									                       <field name="dia_chi_giao" /> 	
+									                   </group>
+								                 </group>	
+					               					      	               
+					             			 </sheet> 
+					           
+						                </form>
+			                      </field>
+			                     <field name="dien_giai" placeholder="Diễn giải"/>       
+			                 </page>
+			                
+			                 	 <page name="phieuxuatkho" string="Lệnh xuất kho - Phiếu vận chuyển" attrs="{'invisible': [('parent_id','=',True)]}">
+			                 	   <separator string="Danh sách Lệnh xuất kho "  attrs="{'invisible': [('kehoach_cha','!=',False),('chang_khvc','=','chang_2')]}"/>
+				                 	 <field name="xuatkho_lines" readonly="1"  attrs="{'invisible': [('kehoach_cha','!=',False),('chang_khvc','=','chang_2')]}"/>
+				                 	
+				                 	 <separator string="Danh sách  Phiếu vận chuyển "  attrs="{'invisible': [('parent_id','=',True)]}"/>
+				                 	 <field name="phieuvc_lines"  readonly="1"  attrs="{'invisible': [('parent_id','=',True)]}"/>
+				                 	
+			                 	 </page>
+			                 	  <page name="thongtin_them" string="Thông tin thêm">
+				                 	  <group>
+				                 	    <field name="order_partner_id" readonly="1"/>
+				                 	   <field name="street" readonly="1"/>
+				                 	      <field name="haiduong_id" /> 	 
+				                 	  </group>
+			                 	   
+			                 	  </page>		                
+		                 </notebook>
+		           	               
+	                 </sheet> 
+	              <div class="oe_chatter"><field name="message_ids" widget="mail_thread"/></div>
+	                </form>
+   				 </field>
+			 </record>         
+        
+         <record id="action_icsc_icsc_hopdong_vanchuyen_kehoach_view" model="ir.actions.act_window">
+            <field name="name">Kế hoạch vận chuyển</field>
+            <field name="res_model">icsc.hopdong.vanchuyen.giacuoc.kehoach</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar</field>   
+			 <field name="search_view_id" ref="icsc_icsc_hopdong_vanchuyen_kehoach_tree_view_list"/>      
+           
+        </record>
+        
+         <record id="view_icsc_icsc_hopdong_vanchuyen_kehoach_treeall_view" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="icsc_icsc_hopdong_vanchuyen_kehoach_tree_all_view"/>
+            <field name="act_window_id" ref="action_icsc_icsc_hopdong_vanchuyen_kehoach_view"/>
+        </record>
+        
+         <record id="action_icsc_vanchuyen_kehoach_trungchuyen" model="ir.actions.act_window">
+            <field name="name">Kế hoạch vận chuyển - Có trung chuyển</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">icsc.hopdong.vanchuyen.giacuoc.kehoach</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar,graph</field>
+            <field name="search_view_id" ref="icsc_lt_vanchuyen.icsc_icsc_hopdong_vanchuyen_kehoach_tree_view_list"/>
+             <field name="context">{'default_trung_chuyen': True,}</field>
+            <field name="domain">[('trung_chuyen','=','True')]</field>
+            
+        </record>
+        <record id="view_icsc_icsc_hopdong_vanchuyen_kehoach_tree_view" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="icsc_icsc_hopdong_vanchuyen_kehoach_tree_view"/>
+            <field name="act_window_id" ref="action_icsc_vanchuyen_kehoach_trungchuyen"/>
+        </record>
+        <record id="view_icsc_icsc_hopdong_vanchuyen_kehoach_form_view" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="icsc_icsc_hopdong_vanchuyen_kehoach_view"/>
+            <field name="act_window_id" ref="action_icsc_vanchuyen_kehoach_trungchuyen"/>
+        </record>
+        <record id="action_icsc_vanchuyen_kehoach_khongtrungchuyen" model="ir.actions.act_window">
+            <field name="name">Kế hoạch vận chuyển - Không trung chuyển</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">icsc.hopdong.vanchuyen.giacuoc.kehoach</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar,graph</field>
+            <field name="search_view_id" ref="icsc_lt_vanchuyen.icsc_icsc_hopdong_vanchuyen_kehoach_tree_view_list"/>
+             <field name="context">{'default_trung_chuyen': False,}</field>
+            <field name="domain">[('trung_chuyen','!=','True'),('ngoai_le','!=','True')]</field>           
+        </record>
+        <record id="view_icsc_icsc_hopdong_vanchuyen_kehoach_tree_view_khongtrungchuyen" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="icsc_icsc_hopdong_vanchuyen_kehoach_tree_view_khongtrungchuyen"/>
+            <field name="act_window_id" ref="action_icsc_vanchuyen_kehoach_khongtrungchuyen"/>
+        </record>
+        <record id="view_icsc_icsc_hopdong_vanchuyen_kehoach_form_view_khongtrungchuyen" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="icsc_icsc_hopdong_vanchuyen_kehoach_view"/>
+            <field name="act_window_id" ref="action_icsc_vanchuyen_kehoach_khongtrungchuyen"/>
+        </record>
+        <!--  khvc ngoai le - p/s 31/12/2014 - oanhle -->
+        <record id="icsc_icsc_hopdong_vanchuyen_kehoach_ngoaile_view" model="ir.ui.view">
+	            <field name="name">icsc.hopdong.vanchuyen.giacuoc.kehoach.ngoaile.form</field>
+	            <field name="model">icsc.hopdong.vanchuyen.giacuoc.kehoach</field>
+	            <field name="arch" type="xml">
+	                <form string="Kế hoạch vận chuyển" version="7.0">	 
+	                  <header>   
+	                    <button name="action_return" string="Mở lại kế hoạch" type="object" states="cancel" class="oe_highlight" />                     
+                        <button name="action_confirm_ngoaile" string="Xác nhận" type="object" states="draft" class="oe_highlight" />
+             		    <button name="action_cancel" states="confirm,process,done" string="Hủy kế hoạch" type="object" />
+                         <button name="%(action_icsc_kehoach_update)d"  string="Sửa kế hoạch" type="action"
+                         attrs="{'invisible': ['|',('state','not in',('process','confirm','done')),('kehoach_cha','!=',False)]}" 
+                         groups="icsc_lt_vanchuyen.nhom_quan_ly_vanchuyen_chinhsua" />
+                        
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirm,process,done" statusbar_colors='{"cancel":"red","confirm":"blue"}'/>
+               		 </header>              
+	                 <sheet>
+	                 <group>
+		                  <group>
+		                      <field name="ngoai_le"/> 
+		                      <field name="trung_chuyen" invisible="1"/> 
+		                      <field name="chang_khvc" invisible="1"/> 
+		                  </group>		                 
+	                 </group>
+		                 <group>
+			                   <group>
+			                      <field name="parent_id" invisible="1"/> 
+			                      <field name="name" /> 
+			                      <field name="congty_vc" on_change="load_hopdong(congty_vc)" attrs="{'invisible': [('parent_id','=',True)],'required': [('parent_id','=',False)]}"  />
+			                      <field name="so_khvc" attrs="{'invisible': [('parent_id','=',True)]}" /> 
+			                      <field name="khach_hang" attrs="{'invisible': [('trung_chuyen','=',True),('parent_id','=',False)]}" on_change="onchange_khach_hang(khach_hang)" /> 
+			                      <field name="dia_chi_khach_hang"  attrs="{'invisible': [('trung_chuyen','=',True),('parent_id','=',False)]}" /> 	
+			                      <field name="la_khach_hang" on_change="onchange_la_khach_hang(la_khach_hang, sale_id, cuoc_den_diem, khach_hang)" attrs="{'invisible': ['|',('parent_id','=',True),('trung_chuyen','=',False)]}"  /> 		                                          
+			                 	  <field name="donvi_nhanhang" on_change="onchange_khach_hang_con(donvi_nhanhang)" attrs="{'invisible': ['|','|',('la_khach_hang','=',True),('parent_id','=',True),('trung_chuyen','=',False)]}"/> 
+			                 	  <field name="dia_chi_khach_hang_con" attrs="{'invisible': ['|','|',('la_khach_hang','=',True),('parent_id','=',True),('trung_chuyen','=',False)]}"/> 	
+			                	  <field name="nhan_hang_tn" attrs="{'invisible': [('parent_id','=',True),('kehoach_cha','=',False)]}" /> 
+			                 	  <field name="nhan_hang_dn" attrs="{'invisible': [('parent_id','=',True),('kehoach_cha','=',False)]}"/>
+			                 </group>
+			                 <group>			                    
+			                     <field name="kehoach_cha"  invisible="1"/>	
+			                     <field name="sale_id" on_change="onchange_sale_id_ngoaile(sale_id,ngoai_le)"
+			                     					   domain="[('loai_lenh_vc','=','vanchuyen'),('state','not in',('draft','cancel'))]"/> 			                       
+			                     <field name="ngay_tao" /> 	
+			                     <field name="tao_khvc_ngoaile" invisible="1"/>			                   	 
+			                     <field name="loai_khvc"  string="Loại kế hoạch vận chuyển" attrs="{'required': [('trung_chuyen','=',False)]}"/> 	
+			                     <field name="phuongthuc_vc"  readonly="1" /> 	
+			                     <field name="donvi_thuchien" /> 
+			                     <field name="kl_dang_vc" invisible="1"/>
+			                     <field name="ngay_lap"/> 				                                       
+			                   	 <field name="kiem_soat" />
+			                   	 <field name="giam_sat_kho" />
+			                   </group>
+		                 </group>	
+		                   <notebook>			               
+			                 <page name="thongtin" string="Thông tin cước">
+			                 	<div class="oe_right oe_button_box" name="buttons">
+						                		<button name="%(action_icsc_diem_tinhcuoc_update)d" type="action"
+					                                string="Điểm tính cước" icon="gtk-execute"		
+					                                 attrs="{'invisible': [('parent_id','=',True)]}"		                               
+					                               />
+					                		 </div>
+					             <separator string="Thông tin cước" />  		 
+			                      <group>
+					                    <group>
+						                      <field name="state_pheduyet" invisible="1"/> 
+						                      <field name="nguoi_duyet" invisible="1"/> 
+						                      <field name="tu_diem" /> 				                      
+						                      <field name="cuoc_tu_diem" attrs="{'invisible': [('parent_id','=',True),('kehoach_cha','=',False)]}" /> 						                     
+						                      <field name="tinh_denxa" attrs="{'invisible': [('parent_id','=',True),('kehoach_cha','=',False)]}" invisible="1"/> 			                                          
+						                 	 
+						                 </group>
+						                 <group>
+						                      <field name="diem_trung_chuyen" on_change="onchange_diem_trung_chuyen(diem_trung_chuyen)" attrs="{'invisible': [('chang_khvc','!=','chang_1')]}"/> 	
+						                      <field name="den_diem" /> 
+						                      <field name="cuoc_den_diem"  attrs="{'invisible': [('parent_id','=',True),('kehoach_cha','=',False)]}" /> 			          
+						                      <field name="ngay_duyet" invisible="1"/>			                   	 
+						                       
+						                        		                     
+						                      
+						                  </group>
+		              			   </group>				                 				
+					                		 <div class="oe_right oe_button_box" name="buttons">
+						                		<button name="%(action_icsc_lt_chitiet_sanpham_ngoaile)d" type="action"
+					                                string="Tải sản phẩm vận chuyển" icon="gtk-execute"		
+					                                 attrs="{'invisible': [('state','!=','draft')]}"		                               
+					                            />
+					                		 </div>
+					              <separator string="Thông tin vật tư vận chuyển" />  		 
+			                      <field name="chitiet_kh" > 
+			                          <tree string="Chi tiết vận chuyển"  name="chitiet_tree" create="0" >		
+					                	<field name="name" /> 	  
+					                	<field name="sale_order_line" />              
+					                    <field name="product_id" /> 
+					                    
+					                     <field name="kl_vc_dukien"  invisible="1" string="Kl vận chuyển dự kiến"  /> 
+					                    
+					                 
+					                    <field name="kl_vc_kehoach" sum="total" string="KL KH"/> 					                   
+					                    <field name="kl_dangvc_dukien"  sum="total" string="KL đang VC" />    
+					                     <field name="kl_vc_conlai" string="KL còn lại" sum="total"/> 		
+					                     <field name="dia_chi_giao" invisible="1" />  		                 
+									 </tree>
+									<form string="Chi tiết vận chuyển"  version="7.0"> 		
+						                	<sheet>
+							                	
+								                 <group>
+									                 <group>
+									                     
+									                      <field name="name" /> 
+									                       <field name="kl_vc_dukien"  invisible="1" readonly="1" string="Kl vận chuyển dự kiến" /> 
+									                      <field name="kl_vc_kehoach" string="KL KH"/> 
+									                     	<field name="kl_dangvc_dukien"  string="KL đang VC" />                      
+									                  </group>
+									                   <group>
+									                      <field name="product_id" />			                   	 
+									                      <field name="kl_can_vanchuyen" readonly="1" /> 
+									                       <field name="kl_vc_conlai" string="KL còn lại" /> 		                     
+									                       <field name="dia_chi_giao" /> 	
+									                   </group>
+								                 </group>	
+					               					      	               
+					             			 </sheet> 
+					           
+						                </form>
+			                      </field>
+			                     <field name="dien_giai" placeholder="Diễn giải"/>       
+			                 </page>
+			                
+			                 	 <page name="phieuxuatkho" string="Phiếu vận chuyển đường sắt" attrs="{'invisible': [('parent_id','=',True)]}">
+			                 	   <separator string="Danh sách Phiếu vận chuyển"  attrs="{'invisible': [('parent_id','=',True)]}"/>
+				                 	 <field name="phieuvc_lines"  readonly="1"  attrs="{'invisible': [('parent_id','=',True)]}"/>
+				                 	
+			                 	 </page>
+			                 	  <page name="thongtin_them" string="Thông tin thêm">
+				                 	  <group>
+				                 	    <field name="order_partner_id" readonly="1"/>
+				                 	   <field name="street" readonly="1"/>
+				                 	      <field name="haiduong_id" /> 	 
+				                 	  </group>
+			                 	   
+			                 	  </page>		                
+		                 </notebook>
+		           	               
+	                 </sheet> 
+	              <div class="oe_chatter"><field name="message_ids" widget="mail_thread"/></div>
+	                </form>
+   				 </field>
+			 </record>  
+          <record id="action_icsc_vanchuyen_kehoach_ngoaile" model="ir.actions.act_window">
+            <field name="name">Kế hoạch vận chuyển - Ngoại lệ</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">icsc.hopdong.vanchuyen.giacuoc.kehoach</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar,graph</field>
+            <field name="search_view_id" ref="icsc_lt_vanchuyen.icsc_icsc_hopdong_vanchuyen_kehoach_tree_view_list"/>
+             <field name="context">{'default_trung_chuyen': False,'default_ngoai_le': True,
+                                    'default_phuongthuc_vc': 'duongsat_thongthuong',
+                                    'default_cuoc_tu_diem':113,}</field>
+            <field name="domain">[('trung_chuyen','!=',True),('ngoai_le','=',True)]</field>
+	      </record>
+	      <record id="view_icsc_icsc_hopdong_vanchuyen_kehoach_tree_view_ngoaile" model="ir.actions.act_window.view">
+	            <field eval="1" name="sequence"/>
+	            <field name="view_mode">tree</field>
+	            <field name="view_id" ref="icsc_icsc_hopdong_vanchuyen_kehoach_tree_view_khongtrungchuyen"/>
+	            <field name="act_window_id" ref="action_icsc_vanchuyen_kehoach_ngoaile"/>
+	      </record>
+	      <record id="view_icsc_icsc_hopdong_vanchuyen_kehoach_form_view_ngoaile" model="ir.actions.act_window.view">
+	            <field eval="2" name="sequence"/>
+	            <field name="view_mode">form</field>
+	            <field name="view_id" ref="icsc_icsc_hopdong_vanchuyen_kehoach_ngoaile_view"/>
+	            <field name="act_window_id" ref="action_icsc_vanchuyen_kehoach_ngoaile"/>
+	      </record>
+        <!-- end -->
+          <menuitem id="menu_action_icsc_icsc_hopdong_vanchuyen_kehoach_view" action="action_icsc_icsc_hopdong_vanchuyen_kehoach_view" name="Kế hoạch vận chuyển" parent="menu_vanchuyen" sequence="4" groups="base.nhom_quan_ly_vanchuyen_kehoach,base.nhom_quan_ly_trambanhang_nguoidung,base.nhom_quan_ly_vanchuyen_duongsat,base.nhom_quan_ly_vanchuyen_duongbo"/>
+          <menuitem id="menu_action_icsc_hopdong_vanchuyen_kehoach_cotrungchuyen" action="action_icsc_vanchuyen_kehoach_trungchuyen" name="Có trung chuyển" parent="menu_action_icsc_icsc_hopdong_vanchuyen_kehoach_view" sequence="0" groups="base.nhom_quan_ly_vanchuyen_kehoach,base.nhom_quan_ly_trambanhang_nguoidung,base.nhom_quan_ly_vanchuyen_duongsat,base.nhom_quan_ly_vanchuyen_duongbo"/>
+          <menuitem id="menu_action_icsc_hopdong_vanchuyen_kehoach_khongtrungchuyen" action="action_icsc_vanchuyen_kehoach_khongtrungchuyen" name="Không trung chuyển" parent="menu_action_icsc_icsc_hopdong_vanchuyen_kehoach_view" sequence="1" groups="base.nhom_quan_ly_vanchuyen_kehoach,base.nhom_quan_ly_trambanhang_nguoidung,base.nhom_quan_ly_vanchuyen_duongsat,base.nhom_quan_ly_vanchuyen_duongbo"/>
+          <menuitem id="menu_action_icsc_vanchuyen_kehoach_ngoaile" action="action_icsc_vanchuyen_kehoach_ngoaile" name="Ngoại lệ" parent="menu_action_icsc_icsc_hopdong_vanchuyen_kehoach_view" sequence="2" groups="base.nhom_quan_ly_vanchuyen_kehoach,base.nhom_quan_ly_trambanhang_nguoidung,base.nhom_quan_ly_vanchuyen_duongsat,base.nhom_quan_ly_vanchuyen_duongbo"/>
+          
+    
+    	<record id="icsc_phieu_vanchuyen_tree_view" model="ir.ui.view">
+	            <field name="name">icsc.phieu.vanchuyen.tree</field>
+	            <field name="model">icsc.phieu.vanchuyen</field>
+	            <field name="priority">4</field>
+	            <field name="arch" type="xml">
+	                  <tree string="Phiếu vận chuyển" >		
+	                	<field name="name" string="Số phiếu" /> 	
+	                	<field name="ngay_vc"  string="Ngày VC" /> 	
+	                	<field name="congty_vc" string="Tên ĐVVC" /> 	                	               
+	                    <field name="hopdong_vanchuyen" invisible="1" />   
+	                    <field name="kehoach_vanchuyen" string="KHVC" /> 	 
+	                    <field name="cuoc_tu_diem" string="Kho xuất" /> 
+	                    <field name="sale_id" string="LXH" invisible="1" />                    
+	                    <field name="loai_phieu" string="Loại phiếu" />    
+	                    <field name="loai_trungchuyen" invisible="1" /> 	  
+	                    <field name="phieu_xuat"  string="PXK" /> 
+	                    <field name="tong_kl"  string="Khối lượng" /> 		
+	                    <field name="amount_total" string="Thành tiền" />                 
+	                    <field name="state" />   	                    
+	                    <field name="so_hoa_don" invisible="1"/>    
+	                     <field name="phuongtien_vc" invisible="1"/>    
+	                      <field name="khach_hang" invisible="1"/>    
+	                    <field name="kiem_soat" invisible="1"/>   
+	                    <field name="dai_dien" invisible="1"/>                    	                  		                 
+	                    <field name="haiduong_id" invisible="1" /> 
+	                </tree>
+	             </field>
+	     </record>
+	     
+	     <record id="icsc_phieu_vanchuyen_duongsat_tree_view" model="ir.ui.view">
+	            <field name="name">icsc.phieu.vanchuyen.duongsat.tree</field>
+	            <field name="model">icsc.phieu.vanchuyen.duongsat</field>
+	            <field name="priority">4</field>
+	            <field name="arch" type="xml">
+	                  <tree string="Phiếu vận chuyển đường sắt" >		
+		                	<field name="name" string="Số vận đơn"/> 
+		                	<field name="ngay_vc" string="Ngày VC" />	
+		                	<field name="congty_vc" string="Tên ĐVVC" />		                	 	                
+		                    <field name="hopdong_vanchuyen" invisible="1"/>   
+		                    <field name="kehoach_vanchuyen" string="KHVC"/> 	
+		                    <field name="sale_id" string="LXH"/>                 
+		                    <field name="loai_phieu" invisible="1" />    
+		                    <field name="loai_trungchuyen" invisible="1" /> 	  
+		                    <field name="phieu_xuat" invisible="1" /> 
+		                    <field name="tong_kl"  string="Khối lượng"/> 	
+		                    <field name="amount_total" string="Thành tiền" />                 
+		                    <field name="state" />   
+	                    	<field name="so_hoa_don" invisible="1"/>    
+	                       <field name="phuongtien_vc" invisible="1"/>    
+	                       <field name="khach_hang" invisible="1"/>    
+	                       <field name="kiem_soat" invisible="1"/> 
+	                       <field name="dai_dien" invisible="1"/> 
+	                       <field name="haiduong_id" invisible="1" />                     	                  		                 
+	                   	  
+	                </tree>
+	             </field>
+	     </record>
+	     
+	     
+	    <record id="icsc_phieu_vanchuyen_form_view" model="ir.ui.view">
+	            <field name="name">icsc.phieu.vanchuyen.form</field>
+	            <field name="model">icsc.phieu.vanchuyen</field>
+	            <field name="arch" type="xml">
+	                <form string="Phiếu vận chuyển" version="7.0">	 
+	                  <header>   
+	                    <button name="action_return" string="Mở lại phiếu" type="object" states="cancel" class="oe_highlight" />                     
+                        <button name="action_confirm" string="Xác nhận" type="object" states="draft" class="oe_highlight" />
+                         <button name="action_du_dk" string="Đủ điều kiện thanh toán" type="object"  class="oe_highlight" groups="base.nhom_quan_ly_vanchuyen_ketqua"
+                         		attrs="{'invisible': ['|','|',('state','!=','confirm'),('tung_phan','=',True),('is_not_pay', '=', True)]}"/>
+                        <button name="%(action_icsc_lt_phieutungphan)d" string="Đủ điều kiện thanh toán" type="action" class="oe_highlight"
+                        		attrs="{'invisible': ['|','|',('state','!=','confirm'),('tung_phan','=',False),('is_not_pay', '=', True)]}"/>
+                        <button name="%(action_icsc_lt_phieutungphan)d" string="Đủ điều kiện thanh toán" type="action" class="oe_highlight"
+                        		attrs="{'invisible': ['|','|','|',('state','!=','du_dk'),('tung_phan','=',False),('amount_con_lai','=',0.0),('is_not_pay', '=', True)]}"/>
+<!--                           <button name="action_vipham" string="Tạo phiếu vi phạm vận chuyển" type="object" class="oe_highlight"  attrs="{'invisible': ['|',('state','not in','confirm'), ('duavao_vipham','=',True)]}"/> -->
+                         <button name="action_done" string="Hoàn tất" type="object" states="du_dk" />
+             		    <button name="action_cancel" states="draft,confirm,done" string="Hủy phiếu" type="object" />
+                       <button name="%(action_icsc_phieuvc_update)d" string="Chỉnh sửa phiếu" type="action" states="confirm,du_dk,done" />
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirm,du_dk,done" statusbar_colors='{"cancel":"red","confirm":"blue"}'/>
+               		 </header>              
+	                 <sheet>
+		                 <group>
+			                   <group>		                   
+			                      <field name="name" /> 
+								  <field name="phieu_xuat" on_change="load_sotoa(phieu_xuat)" required="1"/> 
+			                      <field name="congty_vc" on_change="onchange_nhavanchuyen(congty_vc, is_chang2, sale_id, kehoach_vanchuyen)" default_focus="1" required="1"/>
+			                      <field name="hopdong_vanchuyen" />  
+			                      <field name="sale_id" on_change="onchange_sale_id(sale_id)" /> 
+			                      <field name="is_chang2" on_change="onchange_is_chang2(is_chang2,congty_vc,sale_id,hopdong_vanchuyen,kehoach_vanchuyen)" />  
+			                      <field name="kehoach_cha" attrs="{'invisible': [('trung_chuyen','=',False)]}"/> 
+			                      <field name="kehoach_vanchuyen" on_change="kehoach_vanchuyen(kehoach_vanchuyen,hopdong_vanchuyen,congty_vc)" required="1"/> 
+			                      <field name="cuoc_tu_diem" on_change="onchange_cuoc_tu_diem(cuoc_tu_diem,kehoach_vanchuyen)" /> 
+			                      <field name="kiem_soat" string="Trạm kiểm soát" /> 
+			                      <field name="cha_id" invisible="1"/> 				
+			                      <field name="dai_dien" context="{'default_parent_id': congty_vc}"/> 
+			                     <field name="ga_den" />    
+			                     <field name="tinh_denxa"  invisible="1"/>   
+			                     <field name="chiphi_denxa"  invisible="1" string="Chi phí về xã/bảng giá" attrs="{'invisible': [('tinh_denxa','=',False)]}"/>
+			                	 <field name="tung_phan" />  
+			                	 <field name="duavao_thanhtoan"  attrs="{'invisible': [('tung_phan','=',True)]}"/> 
+			                 	<field name="is_not_pay"/>
+			                 </group>
+			                   <group>	                    			                       
+			                       <field name="ngay_vc" /> 
+			                      <field name="loai_phieu" />			                   	 
+			                      <field name="loai_trungchuyen" invisible="1" /> 
+			                      <field name="phuongtien_vc" /> 	
+			                      <field name="so_hoa_don" on_change="onchange_hoadon(so_hoa_don)" required="1" /> 				                    		                       
+			                      <field name="donvi_nhanhang" /> 
+			                      <field name="khach_hang" /> 
+			                      <field name="cuoc_den_diem" on_change="onchange_cuoc_den_diem(cuoc_den_diem,kehoach_vanchuyen)" /> 
+			                      <field name="lai_xe" on_change="onchange_laixe(lai_xe)" context="{'default_parent_id': congty_vc}" /> 		
+			                      <field name="giayphep_laixe" />  		                      
+			                      <field name="bang_kiem_soat" />    
+			                      <field name="haiduong_id" />    
+			                      <field name="dia_chi_giao" /> 
+			                      <field name="giam_sat_kho" readonly="1" /> 	
+			                      <field name="dem_phieu" invisible="1"/>
+			                   </group>
+		                 </group>	
+		                   <notebook>			               
+			                 <page name="thongtin" string="Thông tin chi tiết">
+			                 <div class="oe_right oe_button_box" name="buttons">
+						                		<button name="action_load_tu_phieu_xuat" type="object"
+					                                string="Tải thông tin từ phiếu xuất kho" icon="gtk-execute"	
+					                                attrs="{'invisible': ['|',('phieu_xuat','=',False),('state','!=','draft')]}"			                               
+					                                class="oe_highlight" 
+					                               	/>
+					                		 </div>
+			                         <field name="chitiet_vc" > 
+			                         <tree string="Chi tiết vận chuyển" create="0">		
+					                	<field name="no" /> 
+					                	<field name="name"  /> 					                		                
+					                    <field name="product_id" /> 
+					                    <field name="don_vi"  />    
+					                    <field name="kl_vc" /> 
+					                    <field name="kl_dangvc_dukien" attrs="{'invisible': [('tung_phan','!=',True)]}"  /> 
+					                    <field name="kl_vc_conlai" attrs="{'invisible': [('tung_phan','!=',True)]}" /> 
+					                    <field name="diem_den" invisible="1"  />  
+					                    <field name="gia_chua_thue"  /> 
+					                    <field name="thue_id"   />  
+					                    <field name="thanh_tien" string="Giá có thuế" />
+					                    <field name="tung_phan"  invisible="1"/>     
+					                     <field name="state"  />     		                  		                 
+					                </tree>
+					                 <form string="Chi tiết vận chuyển"  version="7.0"> 		
+					                	 <header>
+						                    <button name="action_done" string="Đã thanh toán" type="object" states="draft" />
+						                 	<button name="action_reset" string="Đưa về dự thảo" type="object" states="done" />
+						                 	 <field name="state" widget="statusbar" statusbar_visible="draft,confirm,du_dk,du_dk_tung_phan,done" statusbar_colors='{"done":"blue"}'/>
+						                 </header>	
+					                	<sheet>
+							                 <group>
+								                 <group>
+								                     <field name="name"  limit="2"/> 	                
+								                    <field name="product_id" /> 
+								                    <field name="don_vi"  />    
+								                     <field name="kl_vc" /> 
+											          <field name="kl_dangvc_dukien" attrs="{'invisible': [('tung_phan','=',False)]}"  /> 
+					                   				 <field name="kl_vc_conlai" attrs="{'invisible': [('tung_phan','=',False)]}" /> 
+					                             	                     
+								                  </group>
+								                   <group>
+								                   <field name="diem_den"  />  
+								                    <field name="gia_chua_thue" /> 
+								                    <field name="thue_id"/>  
+								                    <field name="thanh_tien"/>
+								                    <field name="tung_phan"  /> 
+								                    </group>
+							                 </group>	
+		                 					  <field name="ghi_chu"  placeholder="Ghi chú"/> 	           	               
+	                					 </sheet> 
+	              						
+					                </form>
+			                      </field>  
+			                        <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
+			                            <field name="amount_denxa" widget='monetary'  invisible="1"/>
+			                      		<field name="amount_thanhtien"  widget='monetary'   attrs="{'invisible': [('tung_phan','=',True)]}"/>
+		                                <field name="amount_da_vc"  widget='monetary'  attrs="{'invisible': [('tung_phan','=',False)]}"/>
+		                                <field name="amount_con_lai"  widget='monetary'  attrs="{'invisible': [('tung_phan','=',False)]}" />
+		                                <div class="oe_subtotal_footer_separator oe_inline">
+		                                    <label for="amount_total" />                                   
+		                                </div>
+		                                  <field name="amount_total" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary' />
+		                            </group>
+		                             <field name="ghi_chu" placeholder="Ghi chú..."/> 
+                            <div class="oe_clear"/>		
+			                     
+			                 </page>
+			                <page name="chitietcapnhat" string="Chi tiết cập nhật phiếu"  attrs="{'invisible': [('tung_phan','=',False)]}">
+			                	<field name="chitiet_vc_capnhat"  > 
+			                         <tree string="Chi tiết cập nhật phiếu" create="0">		
+					                     <field name="no" />  
+					                     <field name="ngay_capnhat"  />           
+					                     <field name="product_id" /> 					                     
+					                     <field name="kl_vc" />					                 
+					                     <field name="thanh_tien"  />     		                 
+					               		 
+					               		 <field name="duavao_thanhtoan"  />    
+					               		 <field name="state"  />    
+					                </tree>
+					                 <form string="Chi tiết vận chuyển"  version="7.0"> 
+						                 <header>
+						                    <button name="action_done" string="Đã thanh toán" type="object" states="draft" />
+						                 	<button name="action_reset" string="Đưa về dự thảo" type="object" states="done" />
+						                 	 <field name="state" widget="statusbar" statusbar_visible="draft,done" statusbar_colors='{"done":"blue"}'/>
+						                 </header>		
+					                	<sheet>
+							                 <group>
+								                 <group>								                    	                
+								                    <field name="product_id" />								              
+								                     <field name="kl_vc" /> 
+								                       <field name="thanh_tien"/>											                     	                     
+								                  </group>
+								                   <group>					                 
+								                  
+								                     <field name="ngay_capnhat"  />    
+					               					<field name="duavao_thanhtoan"  />  
+								                    </group>
+							                 </group>	
+		                 					 	           	               
+	                					 </sheet> 
+	              					
+					                </form>
+			                      </field>  
+			                </page>
+			                <page string="Thông tin khác">
+			                	<group>
+			                		<field name="banggia_id"  />    
+			                		<field name="nhom_bangia" readonly="1" /> 
+			                		<field name="chang_khvc"   readonly="1" attrs="{'invisible': [('trung_chuyen','=',False)]}"/>    
+			                		<field name="trung_chuyen" readonly="1" /> 
+			                	</group>
+			                	   
+			                </page>			                
+		                 </notebook>
+		           	               
+	                 </sheet> 
+	              <div class="oe_chatter"><field name="message_ids" widget="mail_thread"/></div>
+	                </form>
+   				 </field>
+			 </record>   
+			 
+	<record id="icsc_phieu_vanchuyen_duongsat_form_view" model="ir.ui.view">
+	            <field name="name">icsc.phieu.vanchuyen.duongsat.form</field>
+	            <field name="model">icsc.phieu.vanchuyen.duongsat</field>
+	            <field name="arch" type="xml">
+	                <form string="Phiếu vận chuyển đường sắt" version="7.0">	 
+	                  <header>   
+	                    <button name="action_return" string="Mở lại phiếu" type="object" states="cancel" class="oe_highlight" />                     
+<!--                         <button name="action_confirm" string="Xác nhận" type="object" states="draft" class="oe_highlight" /> -->
+                        <button name="action_du_dk" string="Đủ điều kiện thanh toán" type="object" states="confirm" class="oe_highlight"  groups="base.nhom_quan_ly_vanchuyen_ketqua"/>
+                        
+<!--                           <button name="action_vipham" string="Tạo phiếu vi phạm vận chuyển" type="object"  attrs="{'invisible': ['|',('state','not in','confirm'), ('duavao_vipham','=',True)]}" class="oe_highlight" /> -->
+                        
+                         <button name="action_done" class="oe_highlight"  string="Hoàn tất" type="object" states="du_dk,draft" />
+                      
+             		   <button name="action_cancel" states="draft,confirm,done" string="Hủy phiếu" type="object" />
+                       <button name="%(action_icsc_phieuvc_update)d" string="Chỉnh sửa phiếu" type="action" states="confirm,du_dk,done" />
+                       <button name="%(action_icsc_chon_kehoach_update)d" string="Kế hoạch vận chuyển" type="action" class="oe_highlight" states="draft" />
+                       <field name="state" widget="statusbar" statusbar_visible="draft,confirm,du_dk,done" statusbar_colors='{"cancel":"red","confirm":"blue"}'/>
+               		 </header>              
+	                 <sheet>
+		                 <group>
+			                   <group>			                   
+			                      <field name="name" string="Số vận đơn"/> 
+			                       <field name="congty_vc" on_change="onchange_nhavanchuyen(congty_vc, is_chang2, sale_id, kehoach_vanchuyen)" />
+			                       <field name="hopdong_vanchuyen" />
+			                       <field name="is_chang2" on_change="onchange_is_chang2(is_chang2,congty_vc,sale_id,hopdong_vanchuyen,kehoach_vanchuyen)" invisible="1"/>    
+			                      <field name="kehoach_cha" attrs="{'invisible': [('trung_chuyen','=',False)]}"/> 
+			                       <field name="kehoach_vanchuyen" on_change="kehoach_vanchuyen(kehoach_vanchuyen,hopdong_vanchuyen,congty_vc)" /> 
+			                      <field name="sale_id" on_change="load_loai_vanchuyen(sale_id)"/> 
+			                     <field name="phieu_xuat" on_change="load_sotoa(phieu_xuat)"/> 
+			                      <field name="cuoc_tu_diem" /> 
+			                      <field name="kiem_soat" /> 			
+			                      <field name="dai_dien" invisible="1"/> 			                      
+			                     <field name="tinh_denxa"  invisible="1"/>   
+			                     <field name="chiphi_denxa" string="Chi phí về xã/bảng giá" attrs="{'invisible': [('tinh_denxa','=',False)]}"/>
+			                 </group>
+			                   <group>	                    			                       
+			                       <field name="ngay_vc" /> 
+			                      <field name="loai_trungchuyen" invisible="1" />			                       
+			                      <field name="phuongtien_vc" /> 	
+			                      <field name="so_hoa_don" invisible="1" /> 				                    		                       
+			                      <field name="donvi_nhanhang" /> 
+		                          <field name="cuoc_den_diem" />			                       
+			                      <field name="lai_xe"  invisible="1" on_change="onchange_laixe(lai_xe)" attrs="{'invisible': [('state','in',('done','du_dk','confirm'))]}"/> 		
+			                      <field name="giayphep_laixe"  invisible="1"  />  		                      
+			                      <field name="bang_kiem_soat" string="Số toa xe"/>  
+			                      <field name="haiduong_id" invisible="1"/>    
+			                      <field name="dia_chi_giao" />  
+			                      <field name="giam_sat_kho" readonly="1" /> 	
+			                   </group>
+		                 </group>	
+		                   <notebook>			               
+			                 <page name="thongtin" string="Thông tin chi tiết">
+			                
+			                         <field name="chitiet_vc" > 
+			                         <tree string="Chi tiết vận chuyển" >		
+					                	<field name="no" /> 
+					                	<field name="name"  /> 			                
+					                    <field name="product_id" /> 
+					                    <field name="don_vi"  />    
+					                    <field name="kl_vc" /> 
+					                    <field name="diem_den" invisible="1" />  
+					                    <field name="gia_chua_thues"  /> 
+					                    <field name="thue_id" />  
+					                    <field name="thanh_tien"  />     		                 
+					                </tree>
+					                 <form string="Chi tiết vận chuyển"  version="7.0"> 		
+					                	<sheet>
+							                 <group>
+								                 <group>
+								                   <field name="move_id" on_change="onchange_move_id(move_id)" invisible="1"/> 	
+								                    <field name="name"   on_change="onchange_khvc(name)"/> 	                
+								                    <field name="product_id" /> 
+								                    <field name="don_vi"  />    
+								                     <field name="kl_vc" /> 
+											                     	                     
+								                  </group>
+								                   <group>
+								                   <field name="diem_den" invisible="1" />  
+								                    <field name="gia_chua_thues" /> 
+								                    <field name="thue_id"/> 
+								                     <field name="thue_ids" invisible="1" />   
+								                    <field name="thanh_tien"/>
+								                    </group>
+							                 </group>	
+		                 					  <field name="ghi_chu"  placeholder="Ghi chú"/> 	           	               
+	                					 </sheet> 
+	              						
+					                </form>
+			                      </field>  
+			                        <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
+			                          
+		                                <div class="oe_subtotal_footer_separator oe_inline">
+		                                    <label for="amount_total" />                                   
+		                                </div>
+		                                  <field name="amount_total" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary' />
+		                            </group>
+		                             <field name="ghi_chu" placeholder="Ghi chú..."/> 
+                            <div class="oe_clear"/>		
+			                     
+			                 </page>
+			               <page string="Thông tin khác">
+			               		<group>
+			               		    <field name="loai_phieu" />	
+			               		    <field name="khach_hang" /> 
+				               		<field name="banggia_id"  />    
+				                	<field name="nhom_bangia" />  
+				                	<field name="chang_khvc"   readonly="1" attrs="{'invisible': [('trung_chuyen','=',False)]}"/>    
+			                		<field name="trung_chuyen" readonly="1" />  
+			                		<field name="duavao_thanhtoan" invisible="1"/>   
+			                	</group>
+			                </page>	
+			                			                
+		                 </notebook>
+		           	               
+	                 </sheet> 
+	              <div class="oe_chatter"><field name="message_ids" widget="mail_thread"/></div>
+	                </form>
+   				 </field>
+			 </record>     
+			 
+			   
+	   <record id="action_icsc_phieu_vanchuyen_view_calendar" model="ir.ui.view">
+            <field name="name">icsc.phieu.vanchuyen.calendar</field>
+            <field name="model">icsc.phieu.vanchuyen</field>
+            <field name="priority" eval="2"/>
+            <field name="arch" type="xml">
+            <calendar string="Phiếu vận chuyển" color="kehoach_vanchuyen"  date_start="ngay_vc"  >
+                      <field name="name"/>                                     
+                   
+             </calendar>
+            </field>
+        </record>
+        
+         <record id="action_icsc_phieu_vanchuyen_duongsat_view_calendar" model="ir.ui.view">
+            <field name="name">icsc.phieu.vanchuyen.duongsat.calendar</field>
+            <field name="model">icsc.phieu.vanchuyen.duongsat</field>
+            <field name="priority" eval="2"/>
+            <field name="arch" type="xml">
+            <calendar string="Phiếu vận chuyển đường sắt" color="kehoach_vanchuyen"  date_start="ngay_vc"  >
+                      <field name="name"/>                                     
+                   
+             </calendar>
+            </field>
+        </record>
+        
+        
+         <record id="action_icsc_phieu_vanchuyen_view_list" model="ir.ui.view">
+            <field name="name">icsc.phieu.vanchuyen.list.select</field>
+            <field name="model">icsc.phieu.vanchuyen</field>
+            <field name="arch" type="xml">
+                <search string="Phiếu vận chuyển">
+                    <field name="name" string="Số phiếu" filter_domain="['|',('name','ilike',self),('kehoach_vanchuyen','ilike',self)]"/>
+                    <field name="congty_vc" string="Tên nhà vận chuyển" filter_domain="[('congty_vc','ilike',self)]"/>
+                    
+                    <separator/>
+                    <filter icon="terp-document-new" string="Chưa vận chuyển" name="draft" domain="[('state','in',('draft',))]" help="Sales Order that haven't yet been confirmed"/>
+                    <filter icon="terp-check" string="Đang vận chuyển" name="confirm" domain="[('state','in',('confirm',))]"/>
+                     <filter icon="terp-dolar_ok!" string="Hoàn tất" domain="[('state','=','done')]" />
+                    <filter icon="terp-dolar_ok!" string="Hủy" domain="[('state','=','cancel')]" />
+                    <separator/>                 
+                  
+                    <group expand="0" string="Nhóm theo...">
+                        <filter string="Hợp đồng vận chuyển" icon="terp-personal" domain="[]" context="{'group_by':'hopdong_vanchuyen'}"/>
+                        <filter string="Kế hoạch vận chuyển" icon="terp-personal" domain="[]" context="{'group_by':'kehoach_vanchuyen'}"/>
+                        <filter string="Trạng thái" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'state'}"/>
+                        <filter string="Loại phiếu" icon="terp-go-month" domain="[]" context="{'group_by':'loai_phieu'}"/>
+                         <filter string="Phiếu xuất kho" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'phieu_xuat'}"/>
+                        <filter string="Số hóa đơn" icon="terp-go-month" domain="[]" context="{'group_by':'so_hoa_don'}"/>
+                         <filter string="Phương tiện vận chuyển" icon="terp-go-month" domain="[]" context="{'group_by':'phuongtien_vc'}"/>
+                         <filter string="Khách hàng" icon="terp-go-month" domain="[]" context="{'group_by':'khach_hang'}"/>
+                         <filter string="Trạm kiểm soát" icon="terp-go-month" domain="[]" context="{'group_by':'kiem_soat'}"/>
+                         <filter string="Công ty vận chuyển" name="group_ctyvc" icon="terp-go-month" domain="[]" context="{'group_by':'congty_vc'}"/>
+                         <filter string="Lệnh xuất hàng" icon="terp-go-month" domain="[]" context="{'group_by':'sale_id'}"/>
+                         <filter string="Đơn vị thực hiện" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'haiduong_id'}"/>
+                    </group>
+               </search>
+            </field>
+        </record>		
+        
+      <record id="action_icsc_phieu_vanchuyen_duongsat_view_list" model="ir.ui.view">
+            <field name="name">icsc.phieu.vanchuyen.duongsat.list.select</field>
+            <field name="model">icsc.phieu.vanchuyen.duongsat</field>
+            <field name="arch" type="xml">
+                <search string="Phiếu vận chuyển đường sắt">
+                    <field name="name" string="Số phiếu" filter_domain="['|',('name','ilike',self),('kehoach_vanchuyen','ilike',self)]"/>
+                                     <field name="congty_vc" string="Tên nhà vận chuyển" filter_domain="[('congty_vc','ilike',self)]"/>
+                    <separator/>
+                    <filter icon="terp-document-new" string="Chưa vận chuyển" name="draft" domain="[('state','in',('draft',))]" help="Sales Order that haven't yet been confirmed"/>
+                    <filter icon="terp-check" string="Đang vận chuyển" name="confirm" domain="[('state','in',('confirm',))]"/>
+                     <filter icon="terp-dolar_ok!" string="Hoàn tất" domain="[('state','=','done')]" />
+                    <filter icon="terp-dolar_ok!" string="Hủy" domain="[('state','=','cancel')]" />
+                    <separator/>                 
+                   
+                   
+                    <group expand="0" string="Nhóm theo...">
+                        <filter string="Hợp đồng vận chuyển" icon="terp-personal" domain="[]" context="{'group_by':'hopdong_vanchuyen'}"/>
+                        <filter string="Kế hoạch vận chuyển" icon="terp-personal" domain="[]" context="{'group_by':'kehoach_vanchuyen'}"/>
+                        <filter string="Trạng thái" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'state'}"/>
+                        <filter string="Loại phiếu" icon="terp-go-month" domain="[]" context="{'group_by':'loai_phieu'}"/>
+                         <filter string="Phiếu xuất kho" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'phieu_xuat'}"/>
+                        <filter string="Số hóa đơn" icon="terp-go-month" domain="[]" context="{'group_by':'so_hoa_don'}"/>
+                         <filter string="Phương tiện vận chuyển" icon="terp-go-month" domain="[]" context="{'group_by':'phuongtien_vc'}"/>
+                         <filter string="Khách hàng" icon="terp-go-month" domain="[]" context="{'group_by':'khach_hang'}"/>
+                         <filter string="Trạm kiểm soát" icon="terp-go-month" domain="[]" context="{'group_by':'kiem_soat'}"/>
+                         <filter string="Công ty vận chuyển" icon="terp-go-month" domain="[]" context="{'group_by':'congty_vc'}"/>
+                          <filter string="Lệnh xuất hàng" icon="terp-go-month" domain="[]" context="{'group_by':'sale_id'}"/>
+                  		 <filter string="Đơn vị thực hiện" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'haiduong_id'}"/>
+                    </group>
+               </search>
+            </field>
+        </record>	
+        
+         
+	<record id="action_icsc_phieu_vanchuyen_view" model="ir.actions.act_window">
+            <field name="name">Phiếu vận chuyển</field>
+            <field name="res_model">icsc.phieu.vanchuyen</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar</field>  
+              <field name="domain">[('phuongtien_vc','in',('duongbo','duongthuy','duongsat_chuyentuyen'))]</field> 
+			 <field name="search_view_id" ref="action_icsc_phieu_vanchuyen_view_list"/>    
+           
+    </record>
+   <menuitem id="menu_action_icsc_phieu_vanchuyen_view" action="action_icsc_phieu_vanchuyen_view" name="Phiếu vận chuyển" parent="menu_vanchuyen" sequence="5" groups="base.nhom_quan_ly_vanchuyen_duongbo,base.nhom_quan_ly_trambanhang_pvc"/>
+     
+     <record id="action_icsc_phieu_vanchuyen_duongsat_view" model="ir.actions.act_window">
+            <field name="name">Phiếu vận chuyển đường sắt</field>
+            <field name="res_model">icsc.phieu.vanchuyen.duongsat</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar</field>   
+              <field name="domain">[('phuongtien_vc','=','duongsat_thongthuong')]</field>
+              <field name="context">{'default_congty_vc': 8048}</field>
+			 <field name="search_view_id" ref="action_icsc_phieu_vanchuyen_duongsat_view_list"/>    
+           
+    </record>
+   <menuitem id="menu_action_icsc_phieu_vanchuyen_duongsat_view" action="action_icsc_phieu_vanchuyen_duongsat_view" name="Phiếu VC đường sắt" parent="menu_vanchuyen" sequence="5" groups="base.nhom_quan_ly_vanchuyen_duongsat"/>
+         
+        
+     <record id="icsc_phieuvipham_vanchuyen_tree_view" model="ir.ui.view">
+	            <field name="name">icsc.phieuvipham.vanchuyen.tree</field>
+	            <field name="model">icsc.phieuvipham.vanchuyen</field>
+	            <field name="priority">4</field>
+	            <field name="arch" type="xml">
+	                <tree string="Phiếu vi phạm vận chuyển" >		
+	                	<field name="name" /> 	                
+	                    <field name="phieu_vanchuyen" /> 
+	                     <field name="ngay_vc" />  
+	                                
+	                    <field name="ngay_phat" />    
+	                    <field name="congty_vc" /> 	  
+	                    <field name="donvi_nhanhang" /> 	      
+	                     <field name="khach_hang"  invisible="1"/> 	   
+	                      <field name="ly_do" /> 	            
+	                    <field name="state" />     
+	                    <field name="amount_total"/>             	                  		                 
+	                   
+	                </tree>
+	             </field>
+	     </record>
+	   <record id="icsc_phieuvipham_vanchuyen_tree_view_view" model="ir.ui.view">
+	           <field name="name">icsc.phieuvipham.vanchuyen.form</field>
+	            <field name="model">icsc.phieuvipham.vanchuyen</field>
+	            <field name="priority">4</field>
+	            <field name="arch" type="xml">
+	                <form string="Phiếu vi phạm vận chuyển" version="7.0">	 
+	                  <header>   
+	                    <button name="action_return" string="Mở lại phiếu" type="object" states="cancel" class="oe_highlight" />                     
+                        <button name="action_confirm" string="Xác nhận" type="object" states="draft" class="oe_highlight" />
+                        <button name="action_done" string="Hoàn tất" type="object" states="confirm" />
+             		    <button name="action_cancel" states="draft,confirm,done" string="Hủy phiếu" type="object" />
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirm,done" statusbar_colors='{"cancel":"red","confirm":"blue"}'/>
+               		 </header>              
+	                 <sheet>
+		                 <group>
+			                   <group>			                   
+			                     	                      
+			                      <field name="name"  attrs="{'readonly': [('check_dntt','=',True)]}"/> 
+			                      <field name="phieu_vanchuyen" on_change="phieu_vanchuyen(phieu_vanchuyen)" attrs="{'readonly': [('check_dntt','=',True)]}"/> 			
+			                      <field name="ngay_phat" attrs="{'readonly': [('check_dntt','=',True)]}"/> 
+			                      <field name="congty_vc" attrs="{'readonly': [('check_dntt','=',True)]}"/> 	
+			                      <field name="donvi_nhanhang" attrs="{'readonly': [('check_dntt','=',True)]}" /> 
+			                      <field name="duavao_vipham" readonly="1" /> 
+			                      <field name="check_dntt" invisible="1" />
+			                   </group>
+			                   <group>	                    			                       
+			                      	
+			                      <field name="ngay_lap" attrs="{'readonly': [('check_dntt','=',True)]}" />		                   	 
+			                      <field name="ngay_vc" attrs="{'readonly': [('check_dntt','=',True)]}" /> 
+			                      <field name="ly_do"  attrs="{'readonly': [('check_dntt','=',True)]}"/> 
+			                      <field name="khach_hang" attrs="{'readonly': [('check_dntt','=',True)]}" /> 	
+			                        <field name="amount_total" attrs="{'readonly': [('check_dntt','=',True)]}" />			                    		                       
+			                   </group>
+		                 </group>	
+		             
+		                   <notebook>	
+		                   		               
+			                 <page name="thongtin" string="Thông tin chi tiết">
+			                  				<div class="oe_right oe_button_box" name="buttons">
+						                		<button name="action_load_tu_phieu_vc" type="object"
+					                                string="Tải thông tin phiếu vận chuyển" icon="gtk-execute"	
+					                                attrs="{'invisible': ['|',('duavao_vipham','=',True),('phieu_vanchuyen','=',False)]}"			                               
+					                               />
+					                		 </div>
+			                         <field name="chitiet_phat"  attrs="{'readonly': [('check_dntt','=',True)]}"> 
+			                         <tree string="Chi tiết phạt" create="0">		
+					                	<field name="name"  invisible="1"/> 	                
+					                    <field name="product_id" /> 
+					                    <field name="don_vi"  />    
+					                    <field name="so_luong" /> 
+					                    <field name="don_gia"  />  
+					                    <field name="gia_cuoc"  />
+					                    <field name="thanh_tien"  sum="total" />     		                 
+					                </tree>
+					                 <form string="Chi tiết"  vertion="7.0" > 		
+					                	<sheet>
+							                 <group>
+								                 <group>
+								                   <field name="name" invisible="1"/> 	                
+								                    <field name="product_id" /> 
+								                    <field name="don_vi"  />    
+								                    <field name="so_luong" />             
+											      </group>
+								                   <group>
+								                    <field name="don_gia"  />  
+								                    <field name="gia_cuoc" sum="total" />
+								                    <field name="thanh_tien"  sum="total" />   
+								                   </group>
+							                 </group>	
+		                 					                
+	                					 </sheet> 
+	              
+					                </form>
+			                      </field>  
+			                       <field name="ghi_chu"  placeholder="Diễn giải" attrs="{'readonly': [('check_dntt','=',True)]}"/>       	  
+			                 </page>
+			               
+                            <div class="oe_clear"/>			                
+		                 </notebook>
+		           	               
+	                 </sheet> 
+	              <div class="oe_chatter"><field name="message_ids" widget="mail_thread"/></div>
+	                </form>
+   				 </field>
+			 </record>     
+	    <record id="action_icsc_phieuvipham_vanchuyen_calendar" model="ir.ui.view">
+            <field name="name">icsc.phieuvipham.vanchuyen.calendar</field>
+            <field name="model">icsc.phieuvipham.vanchuyen</field>
+            <field name="priority" eval="2"/>
+            <field name="arch" type="xml">
+            <calendar string="Phiếu vi phạm vận chuyển" color="phieu_vanchuyen"  date_start="ngay_phat"  >
+                      <field name="name"/>   
+                      <field name="congty_vc"/>                                     
+                   
+             </calendar>
+            </field>
+        </record>
+         <record id="action_icsc_phieuvipham_vanchuyen_list" model="ir.ui.view">
+            <field name="name">icsc.phieuvipham.vanchuyen.list.select</field>
+            <field name="model">icsc.phieuvipham.vanchuyen</field>
+            <field name="arch" type="xml">
+                <search string="Phiếu vi phạm vận chuyển">
+                    <field name="name" string="Số phiếu" filter_domain="['|',('name','ilike',self),('phieu_vanchuyen','ilike',self)]"/>
+                    
+                    <separator/>
+                    <filter icon="terp-document-new" string="Chưa xử lý" name="draft" domain="[('state','in',('draft',))]" help="Sales Order that haven't yet been confirmed"/>
+                    <filter icon="terp-check" string="Xác nhận" name="confirm" domain="[('state','in',('confirm',))]"/>
+                    <filter icon="terp-dolar_ok!" string="Đã xử lý" domain="[('state','=','done')]" />
+                    <filter icon="terp-dolar_ok!" string="Hủy" domain="[('state','=','cancel')]" />
+                    <separator/>                 
+                   
+                    <field name="phieu_vanchuyen"/>
+                    <field name="congty_vc"/>
+                     <field name="donvi_nhanhang"/>
+                     <field name="khach_hang"/>
+                     
+                    <group expand="0" string="Nhóm theo...">
+                        <filter string="Phiếu vận chuyển" icon="terp-personal" domain="[]" context="{'group_by':'phieu_vanchuyen'}"/>
+                        <filter string="Công ty vận chuyển" icon="terp-personal" domain="[]" context="{'group_by':'congty_vc'}"/>
+                        <filter string="Trạng thái" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'state'}"/>
+                        <filter string="Đơn vị nhận hàng" icon="terp-go-month" domain="[]" context="{'group_by':'donvi_nhanhang'}"/>
+                        <filter string="Khách hàng" icon="terp-go-month" domain="[]" context="{'group_by':'khach_hang'}"/>
+                     
+                    </group>
+               </search>
+            </field>
+        </record>		 
+	<record id="action_action_icsc_phieuvipham_vanchuyen" model="ir.actions.act_window">
+            <field name="name">Phiếu vi phạm vận chuyển</field>
+            <field name="res_model">icsc.phieuvipham.vanchuyen</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar</field>   
+			 <field name="search_view_id" ref="action_icsc_phieuvipham_vanchuyen_list"/>    
+           
+    </record>
+   <menuitem id="menu_action_action_icsc_phieuvipham_vanchuyen" action="action_action_icsc_phieuvipham_vanchuyen" name="Phiếu vi phạm vận chuyển" parent="menu_vanchuyen" sequence="8" groups="base.nhom_quan_ly_vanchuyen_ketqua"/>
+   <menuitem id="menu_sodiachi" name="Cấu hình" parent="menu_vanchuyen_root" sequence="11"/>  
+	<menuitem action="icsc_lt_base.action_res_country_diadiem_vanchuyen" id="menu_action_res_country_diadiem_vanchuyen" sequence="1" parent="menu_sodiachi" groups="base.nhom_quan_ly_danhmucvanchuyen,base.nhom_quan_ly_vanchuyen_nguoidung"/>
+   	<menuitem action="icsc_lt_base.action_res_country_tramkiemsoat" id="menu_action_res_country_tramkiemsoat_vanchuyen" sequence="2" parent="menu_sodiachi" groups="base.nhom_quan_ly_danhmucvanchuyen" name="Trạm kiểm soát khu vực"/>
+   <menuitem action="icsc_lt_base.action_icsc_giamsatkho" id="menu_menu_action_icsc_giamsatkho" sequence="2" parent="menu_sodiachi" groups="base.nhom_quan_ly_danhmucvanchuyen"/>
+    
+      <!--quyet dinh gia cuoc van chuyen -->
+           	<record id="icsc_quyetdinh_giacuoc_vanchuyen_tree_view" model="ir.ui.view">
+	            <field name="name">icsc.quyetdinh.giacuoc.vanchuyen.tree</field>
+	            <field name="model">icsc.quyetdinh.giacuoc.vanchuyen</field>
+	            <field name="priority">4</field>
+	            <field name="arch" type="xml">
+	                <tree string="Quyết định"  editable="top" >		
+	                	<field name="name" /> 
+	                	<field name="ngay_banhanh" /> 
+	                	<field name="ngay_hieuluc" /> 
+	                	<field name="ngay_kethuc" /> 	
+	                	<field name="check" /> 	                 
+	                                    	                  		                 
+	                   
+	                </tree>
+	             </field>
+	          </record>
+			        
+	     	<record id="icsc_quyetdinh_giacuoc_vanchuyen_view" model="ir.ui.view">
+	            <field name="name">icsc.quyetdinh.giacuoc.vanchuyen.form</field>
+	            <field name="model">icsc.quyetdinh.giacuoc.vanchuyen</field>
+	            <field name="arch" type="xml">
+	                <form string="Quyết định" version="7.0">
+	                 
+	                    <sheet>
+		                    <group>
+			                    <group>
+				                    <field name="name" /> 
+				                    <field name="ngay_hieuluc" /> 
+				                    <field name="check" /> 	
+			                    </group>
+			                    <group>
+			                    	<field name="ngay_banhanh" /> 
+			                    	<field name="ngay_kethuc" /> 
+			                    </group>
+		                    </group>
+	                    </sheet>                
+	                    <div class="oe_chatter"><field name="message_ids" widget="mail_thread"/></div>
+	                </form>
+   				 </field>
+			 </record>         
+        
+         <record id="action_iicsc_quyetdinh_giacuoc_vanchuyen" model="ir.actions.act_window">
+            <field name="name">Quyết định</field>
+            <field name="res_model">icsc.quyetdinh.giacuoc.vanchuyen</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>          
+           
+        </record>
+        <menuitem action="action_iicsc_quyetdinh_giacuoc_vanchuyen" id="menu_action_iicsc_quyetdinh_giacuoc_vanchuyen" sequence="3" parent="menu_sodiachi" groups="base.nhom_quan_ly_danhmucvanchuyen,base.nhom_quan_ly_vanchuyen_nguoidung"/> 
+  
+  
+   <!--nhom gia cuoc van chuyen -->
+           	<record id="icsc_loai_giacuoc_vanchuyen_tree_view" model="ir.ui.view">
+	            <field name="name">icsc.loai.giacuoc.vanchuyen.tree</field>
+	            <field name="model">icsc.loai.giacuoc.vanchuyen</field>
+	            <field name="priority">4</field>
+	            <field name="arch" type="xml">
+	                <tree string="Nhóm tên bảng giá cước" >		
+	                	<field name="name" /> 
+	                	<field name="ghi_chu" /> 
+	                	                 
+	                                    	                  		                 
+	                   
+	                </tree>
+	             </field>
+	          </record>
+			        
+	     	<record id="icsc_loai_giacuoc_vanchuyen_view" model="ir.ui.view">
+	            <field name="name">icsc.loai.giacuoc.vanchuyen.form</field>
+	            <field name="model">icsc.loai.giacuoc.vanchuyen</field>
+	            <field name="arch" type="xml">
+	                <form string="Nhóm tên bảng giá cước"  version="7.0">
+	                 
+	                    <sheet>
+		                    <group>
+			                    <group>
+				                    <field name="name" /> 				                   
+			                    </group>			                    
+		                    </group>
+		                    <field name="ghi_chu" placeholder="Ghi chú"/> 	
+	                    </sheet>                
+	                    <div class="oe_chatter"><field name="message_ids" widget="mail_thread"/></div>
+	                </form>
+   				 </field>
+			 </record>         
+        
+         <record id="action_icsc_loai_giacuoc_vanchuyen" model="ir.actions.act_window">
+            <field name="name">Nhóm tên bảng giá cước</field>
+            <field name="res_model">icsc.loai.giacuoc.vanchuyen</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>          
+           
+        </record>
+        <menuitem action="action_icsc_loai_giacuoc_vanchuyen" id="menu_action_icsc_loai_giacuoc_vanchuyen" sequence="4" parent="menu_sodiachi" groups="base.nhom_quan_ly_danhmucvanchuyen"/> 
+   <!--nhom gia cuoc van chuyen -->
+           	<record id="icsc_loai_phat_tree_view" model="ir.ui.view">
+	            <field name="name">icsc.loai.phat.tree</field>
+	            <field name="model">icsc.loai.phat</field>
+	            <field name="priority">4</field>
+	            <field name="arch" type="xml">
+	                <tree string="Lý do phạt" >		
+	                	<field name="name" /> 
+	                	<field name="mo_ta" /> 
+	                	                 
+	                                    	                  		                 
+	                   
+	                </tree>
+	             </field>
+	          </record>
+			        
+	     	<record id="icsc_loai_phat_view" model="ir.ui.view">
+	            <field name="name">icsc.loai.phat.form</field>
+	            <field name="model">icsc.loai.phat</field>
+	            <field name="arch" type="xml">
+	                <form string="Lý do phạt"  version="7.0">
+	                 
+	                    <sheet>
+		                    <group>
+			                    <group>
+				                    <field name="name" /> 				                   
+			                    </group>			                    
+		                    </group>
+		                    <field name="mo_ta" placeholder="Ghi chú"/> 	
+	                    </sheet>                
+	                    <div class="oe_chatter"><field name="message_ids" widget="mail_thread"/></div>
+	                </form>
+   				 </field>
+			 </record>         
+        
+         <record id="action_icsc_loai_phat" model="ir.actions.act_window">
+            <field name="name">Lý do phạt</field>
+            <field name="res_model">icsc.loai.phat</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>          
+           
+        </record>
+          <menuitem action="icsc_lt_base.action_res_country_district" id="menu_action_res_country_district"  name="Huyện/Quận/Thành phố" sequence="5" parent="menu_sodiachi" groups="base.nhom_quan_ly_danhmucvanchuyen"/> 
+          <menuitem action="icsc_lt_base.action_res_country_ward" id="menu_action_res_country_ward" sequence="6" parent="menu_sodiachi" groups="base.nhom_quan_ly_danhmucvanchuyen"/> 
+          <menuitem action="base.action_res_bank_form"  name="Các ngân hàng" id="menu_action_res_bank_form" sequence="7" parent="menu_sodiachi" groups="base.nhom_quan_ly_danhmucvanchuyen"/>
+         <menuitem action="base.action_res_partner_bank_account_form" name="Các tài khoản ngân hàng" id="menu_action_res_partner_bank_account_form_inherit" sequence="8" parent="menu_sodiachi" groups="base.nhom_quan_ly_danhmucvanchuyen"/> 
+         <menuitem action="base.action_res_partner_bank_type_form"   name="Loại tài khoản ngân hàng" id="menu_action_res_partner_bank_account_form" sequence="9" parent="menu_sodiachi" groups="base.nhom_quan_ly_danhmucvanchuyen"/> 
+         <menuitem action="base.action_country"   name="Quốc gia" id="menu_base_action_country_inherit" sequence="4" parent="menu_sodiachi" groups="base.nhom_quan_ly_danhmucvanchuyen"/> 
+         <menuitem action="base.action_country_state"   name="TỈnh/TP trực thuộc TƯ" id="menu_action_country_state_inherit" sequence="4" parent="menu_sodiachi" groups="base.nhom_quan_ly_danhmucvanchuyen"/> 
+    
+    	<menuitem id="menu_lenhxuathang" name="Lệnh xuất hàng" parent="menu_vanchuyen_root" sequence="2"/>  
+    	   
+      
+      <menuitem action="icsc_lt_banhang.donhang_co_vanchuyen_vat_khoiluongvc" id="menu_banhangcovanchuyenvat_vc" name="Xuất hàng VAT" parent="menu_lenhxuathang" sequence="0" groups="base.nhom_quan_ly_vanchuyen_nguoidung"/>
+	  <menuitem action="icsc_lt_banhang.donhang_co_vanchuyen_guikho_khoiluongvc" id="menu_banhangcovanchuyenvatguikho_vc" name="Xuất hàng gửi kho" parent="menu_lenhxuathang" sequence="1" groups="base.nhom_quan_ly_vanchuyen_nguoidung"/> 	
+	
+	<!-- Chi tiet bang gia -->
+	
+	   	<record id="icsc_hopdong_vanchuyen_chitietbanggia_tree_view" model="ir.ui.view">
+	            <field name="name">icsc.hopdong.vanchuyen.chitietbanggia.tree</field>
+	            <field name="model">icsc.hopdong.vanchuyen.chitietbanggia</field>
+	            <field name="priority">4</field>
+	            <field name="arch" type="xml">
+	             <tree string="Thông tin bảng giá theo hợp đồng" version="7.0">		
+               	    <field name="banggia_id" />   	
+	                <field name="tu_diem" /> 	                
+                    <field name="den_diem" /> 	
+                    <field name="gia_chua_thue" /> 				                    
+                    <field name="tax_id"/> 	
+                    <field name="gia_co_thue"/>
+                     <field name="so_quyet_dinh" /> 	                
+                     <field name="ngay_hieu_luc"/> 	
+                     <field name="ngay_het_hieu_luc" /> 
+                       <field name="hopdong_id"/> 
+	             </tree>
+	             </field>
+	          </record>
+			        
+	     	<record id="icsc_hopdong_vanchuyen_chitietbanggia_view" model="ir.ui.view">
+	            <field name="name">icsc.hopdong.vanchuyen.chitietbanggia.form</field>
+	            <field name="model">icsc.hopdong.vanchuyen.chitietbanggia</field>
+	            <field name="arch" type="xml">
+	                <form string="Thông tin bảng giá theo hợp đồng" version="7.0">
+	                    <sheet>
+		                    <group>
+		                    <field name="banggia_id" on_change="onchange_banggia_id(banggia_id)" />   	
+			                <field name="tu_diem" readonly="1"/> 	                
+		                    <field name="den_diem" readonly="1"/> 	
+		                    <field name="gia_chua_thue" readonly="1"/> 				                    
+		                    <field name="tax_id" readonly="1"/> 	
+		                    <field name="gia_co_thue" readonly="1"/>
+		                     <field name="so_quyet_dinh" readonly="1"/> 	                
+		                     <field name="ngay_hieu_luc" readonly="1"/> 	
+		                     <field name="ngay_het_hieu_luc" readonly="1"/>  
+		                      <field name="hopdong_id" readonly="1"/>  
+		                     </group>
+	                    </sheet>                
+	                    <div class="oe_chatter"><field name="message_ids" widget="mail_thread"/></div>
+	                </form>
+   				 </field>
+			 </record>         
+        
+         <record id="action_icsc_hopdong_vanchuyen_chitietbanggia" model="ir.actions.act_window">
+            <field name="name">Thông tin bảng giá theo hợp đồng</field>
+            <field name="res_model">icsc.hopdong.vanchuyen.chitietbanggia</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>          
+        </record>
+           <menuitem action="action_icsc_hopdong_vanchuyen_chitietbanggia" id="menu_icsc_hopdong_vanchuyen_chitietbanggia" 
+           name="Lịch sử sửa đổi bảng giá HĐ" sequence="0" parent="menu_sodiachi" 
+           groups="base.nhom_quan_ly_danhmucvanchuyen,base.nhom_quan_ly_vanchuyen_nguoidung"
+            />
+    </data>
+</openerp>

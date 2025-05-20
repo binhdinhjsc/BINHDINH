@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    
+        <record id="view_icsc_phieuvc_update_form" model="ir.ui.view">
+            <field name="name">icsc.phieuvc.update.from</field>
+            <field name="model">icsc.phieuvc.update</field>
+            <field name="arch" type="xml">
+                <form string="Cập nhật phiếu vận chuyển" version="7.0">
+                    <sheet>
+                    <group >
+                        <group >
+                        	 <field name="phieu_id" readonly="1"  />  
+                        	 <field name="name" />  
+                          	 <field name="ngay_capnhat" readonly="1" />    
+                          	 <field name="user_id" readonly="1" />  
+                          	 <field name="congty_vc" readonly="1"  /> 
+                          	 <field name="phuongtien_vc" readonly="1"  />  
+                          	 <field name="dai_dien"  attrs="{'invisible': [('phuongtien_vc','=','duongsat_thongthuong')], 'required': [('phuongtien_vc','!=','duongsat_thongthuong')]}"/>  
+                        </group>
+                        <group >                        	 
+                             <field name="bang_kiem_soat_cu" readonly="1"  />  
+                          	 <field name="bang_kiem_soat" />  
+                          	 <field name="lai_xe"  groups="base.nhom_quan_ly_trambanhang,base.nhom_quan_ly_trambanhang_pxk,base.nhom_quan_ly_trambanhang_hoadon,
+                          	 						base.nhom_quan_ly_trambanhang_chinhsua,
+                          	 						base.nhom_quan_ly_trambanhang_pvc,
+                          	 						base.nhom_quan_ly_trambanhang_lxh_haiduong,
+                          	 						base.nhom_quan_ly_trambanhang_nguoidung,
+                          	 						base.nhom_quan_ly_trambanhang_uyquyen"/>    
+                        	 <field name="ngay_vc" />  
+                        	 <field name="kiem_soat" attrs="{'invisible': [('phuongtien_vc','=','duongsat_thongthuong')]}"/> 
+                        	 <field name="giam_sat_kho" attrs="{'invisible': [('phuongtien_vc','=','duongsat_thongthuong')]}" /> 
+                        </group>
+                                       
+                       
+                    </group>                   
+                     <group  groups="base.nhom_quan_ly_vanchuyen_duongbo">
+                        <group >
+                        	 <field name="cuoc_tu_diem"  />  
+                          	
+                        </group>
+                        <group >
+                             <field name="cuoc_den_diem"  />  
+                          	   
+                        </group>
+                                       
+                       
+                    </group> 
+                    <field name="line_ids" groups="base.nhom_quan_ly_vanchuyen_duongbo">
+                     	<tree string="Chi tiết vận chuyển"  editable="bottom" >						          
+							<field name="name" readonly="1"/> 	  
+		                	<field name="product_id" readonly="1"/> 
+		                    <field name="kl_vc"  attrs="{'readonly': [('duongsat','=',False)]}" />  
+		                    <field name="diem_den"  readonly="1" /> 
+		                    <field name="thue_id"  readonly="1" /> 	
+		                    <field name="duongsat"  invisible="1" /> 					                   
+		                    <field name="thanh_tien" />    
+		                    		                 
+					     </tree>
+					     <form string="Chi tiết vận chuyển" version="7.0" >						          
+							<field name="name" readonly="1"/> 	  
+		                	<field name="product_id" readonly="1"/> 
+		                    <field name="kl_vc" attrs="{'readonly': [('duongsat','=',False)]}"  />  
+		                    <field name="diem_den"  readonly="1" /> 
+		                    <field name="thue_id"  readonly="1" /> 								                   
+		                    <field name="thanh_tien" /> 
+		                    <field name="duongsat"  invisible="1" />    
+					     </form>
+					 </field>
+					                 
+                    </sheet>                    
+                    <footer>
+                        <div>
+                            <button name="action_correct_delivery" string="Cập nhật" type="object" class="oe_highlight"/> or
+                            <button special="cancel" string="Hủy" class="oe_link"/>
+                        </div>
+                    </footer>
+                 </form>
+            </field>
+        </record>   
+	<record id="action_icsc_phieuvc_update" model="ir.actions.act_window">
+               <field name="name">Cập nhật Bảng kiểm soát/số xe</field>
+               <field name="type">ir.actions.act_window</field>
+               <field name="res_model">icsc.phieuvc.update</field>
+               <field name="view_type">form</field>
+               <field name="view_mode">form</field>
+               <field name="context">{'record_id' : active_id}</field>
+                <field name="view_id" ref="view_icsc_phieuvc_update_form"/>
+               <field name="target">new</field>
+        </record>
+        <record id="view_icsc_phieuvc_update_tree" model="ir.ui.view">
+            <field name="name">icsc.phieuvc.update.tree</field>
+            <field name="model">icsc.phieuvc.update</field>
+            <field name="arch" type="xml">
+                <tree string="Cập nhật phiếu vận chuyển" version="7.0" >
+                    
+                         <field name="phieu_id" readonly="1"  />
+                         <field name="ngay_capnhat" readonly="1" />
+                         <field name="bang_kiem_soat_cu" readonly="1"  />  
+                         <field name="bang_kiem_soat"  readonly="1"/>
+                         <field name="user_id" readonly="1" />
+                         <field name="ngay_vc" readonlye="1"/>  
+                          <field name="dai_dien"  readonly="1"/> 
+                </tree>    
+             </field>
+         </record>                  
+         
+        <record id="view_icsc_phieuvc_update_form2" model="ir.ui.view">
+            <field name="name">icsc.phieuvc.update.form2</field>
+            <field name="model">icsc.phieuvc.update</field>
+            <field name="arch" type="xml">
+                <form string="Cập nhật kế hoạch vận chuyển" version="7.0">
+                    <sheet>
+                    <group >
+                        <group >
+                        	 <field name="phieu_id" readonly="1"  />  
+                          	 <field name="ngay_capnhat" readonly="1" />
+                          	 <field name="user_id" readonly="1" />  
+                          	 <field name="ngay_vc" readonly="1"/>    
+                          	  <field name="dai_dien"  readonly="1"/> 
+                        </group>
+                        <group >
+                             <field name="bang_kiem_soat_cu" readonly="1"  />  
+                          	 <field name="bang_kiem_soat" readonly="1" />  
+                          	  <field name="lai_xe"  groups="base.nhom_quan_ly_trambanhang,base.nhom_quan_ly_trambanhang_pxk,base.nhom_quan_ly_trambanhang_hoadon,
+                          	 						base.nhom_quan_ly_trambanhang_chinhsua,
+                          	 						base.nhom_quan_ly_trambanhang_pvc,
+                          	 						base.nhom_quan_ly_trambanhang_lxh_haiduong,
+                          	 						base.nhom_quan_ly_trambanhang_nguoidung,
+                          	 						base.nhom_quan_ly_trambanhang_uyquyen" readonly="1" />      
+                        </group>
+                                       
+                       
+                    </group> 
+                      <group >
+                        <group >
+                        	 <field name="cuoc_tu_diem" readonly="1" />  
+                          	
+                        </group>
+                        <group >
+                             <field name="cuoc_den_diem"  readonly="1"/>  
+                          	   
+                        </group>
+                                       
+                       
+                    </group> 
+                    <field name="line_ids" readonly="1">
+                     	<tree string="Chi tiết vận chuyển"  editable="bottom" >						          
+							<field name="name" readonly="1"/> 	  
+		                	<field name="product_id" readonly="1"/> 
+		                    <field name="kl_vc"  readonly="1" />  
+		                    <field name="diem_den"  readonly="1" /> 
+		                    <field name="thue_id"  readonly="1" /> 					                   
+		                    <field name="thanh_tien" />    
+		                    		                 
+					     </tree>
+					     <form string="Chi tiết vận chuyển" version="7.0" >						          
+							<field name="name" readonly="1"/> 	  
+		                	<field name="product_id" readonly="1"/> 
+		                    <field name="kl_vc"  readonly="1" />  
+		                    <field name="diem_den"  readonly="1" /> 
+		                    <field name="thue_id"  readonly="1" /> 								                   
+		                    <field name="thanh_tien" />    
+		                     		                 
+					     </form>
+					 </field>
+					            
+                    </sheet>                    
+                   
+                 </form>
+            </field>
+        </record>           
+         <record id="action_view_icsc_phieuvc_update_form2_lichsu" model="ir.actions.act_window">
+               <field name="name">Lịch sử sửa đổi PVC</field>
+               <field name="type">ir.actions.act_window</field>
+               <field name="res_model">icsc.phieuvc.update</field>
+               <field name="view_type">form</field>               
+               <field name="view_mode">tree,form</field>
+                 <field name="view_id" ref="view_icsc_phieuvc_update_form2"/>
+               
+        </record>
+         <record id="view_icsc_phieuvc_update_tree_tree2" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_icsc_phieuvc_update_tree"/>
+            <field name="act_window_id" ref="action_view_icsc_phieuvc_update_form2_lichsu"/>
+        </record>
+        <record id="action_view_icsc_phieuvc_update_form2" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_icsc_phieuvc_update_form2"/>
+            <field name="act_window_id" ref="action_view_icsc_phieuvc_update_form2_lichsu"/>
+        </record>       
+         <menuitem id="menu_action_view_icsc_phieuvc_update_form2" 
+		         action="action_view_icsc_phieuvc_update_form2_lichsu"			
+				parent="icsc_lt_vanchuyen.menu_vanchuyen" 
+				sequence="21" groups="icsc_lt_vanchuyen.nhom_quan_ly_vanchuyen_chinhsua" />    
+    </data>
+</openerp>

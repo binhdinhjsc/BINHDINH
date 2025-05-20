@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    
+        <record id="view_icsc_hoadon_update_form" model="ir.ui.view">
+            <field name="name">icsc.hoadon.update.from</field>
+            <field name="model">icsc.hoadon.update</field>
+            <field name="arch" type="xml">
+                <form string="Cập nhật số hóa đơn" version="7.0">
+                    <sheet>
+                    <group >
+                        <group >
+                        	 <field name="hoadon_id" readonly="1"  />  
+                          	 <field name="ngay_capnhat" readonly="1" />  
+                          	 <field name="user_id" readonly="1" />     
+                        </group>
+                        <group >
+                             <field name="so_hoa_don_cu" readonly="1"  />  
+                          	 <field name="so_hoa_don" />   
+                          	 <field name="so_quyen" />  
+                          	 <field name="date_invoice" />   
+                        </group>
+                                       
+                       
+                    </group>                   
+                    
+                    </sheet>                    
+                    <footer>
+                        <div>
+                            <button name="action_correct_delivery" string="Cập nhật" type="object" class="oe_highlight"/> or
+                            <button special="cancel" string="Hủy" class="oe_link"/>
+                        </div>
+                    </footer>
+                 </form>
+            </field>
+        </record>   
+	<record id="action_icsc_hoadon_update" model="ir.actions.act_window">
+               <field name="name">Cập nhật số hóa đơn</field>
+               <field name="type">ir.actions.act_window</field>
+               <field name="res_model">icsc.hoadon.update</field>
+               <field name="view_type">form</field>
+               <field name="view_mode">form</field>
+               <field name="context">{'record_id' : active_id}</field>
+                <field name="view_id" ref="view_icsc_hoadon_update_form"/>
+               <field name="target">new</field>
+        </record>
+        <record id="view_icsc_hoadon_update_tree" model="ir.ui.view">
+            <field name="name">icsc.hoadon.update.tree</field>
+            <field name="model">icsc.hoadon.update</field>
+            <field name="arch" type="xml">
+                <tree string="Cập nhật số hóa đơn" version="7.0" editable="bottom" create="0">
+                    
+                         <field name="hoadon_id" readonly="1"  />
+                         <field name="ngay_capnhat" readonly="1" />
+                         <field name="so_hoa_don_cu" readonly="1"  />  
+                         <field name="so_hoa_don"  readonly="1"/>
+                         <field name="user_id" readonly="1" /> 
+                         <field name="so_quyen" readonly="1"  />  
+                          <field name="date_invoice" readonly="1" /> 
+                </tree>    
+             </field>
+         </record>                  
+         
+        <record id="view_icsc_hoadon_update_form2" model="ir.ui.view">
+            <field name="name">icsc.hoadon.update.form2</field>
+            <field name="model">icsc.hoadon.update</field>
+            <field name="arch" type="xml">
+                <form string="Cập nhật số hóa đơn" version="7.0">
+                    <sheet>
+                    <group >
+                        <group >
+                        	 <field name="hoadon_id" readonly="1"  />  
+                          	 <field name="ngay_capnhat" readonly="1" /> 
+                          	 <field name="user_id" readonly="1" />      
+                        </group>
+                        <group >
+                             <field name="so_hoa_don_cu" readonly="1"  />  
+                          	 <field name="so_hoa_don" readonly="1" /> 
+                          	  <field name="so_quyen" readonly="1"  />  
+                          <field name="date_invoice" readonly="1" />    
+                        </group>
+                                       
+                       
+                    </group> 
+                    </sheet>                    
+                   
+                 </form>
+            </field>
+        </record>           
+        <record id="action_view_icsc_hoadon_update_form2_lichsu" model="ir.actions.act_window">
+               <field name="name">Lịch sử sửa đổi số HĐ</field>
+               <field name="type">ir.actions.act_window</field>
+               <field name="res_model">icsc.hoadon.update</field>
+               <field name="view_type">form</field>               
+               <field name="view_mode">tree,form</field>
+                 <field name="view_id" ref="view_icsc_hoadon_update_form2"/>
+               
+        </record>
+         <record id="view_icsc_hoadon_update_tree_tree2" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_icsc_hoadon_update_tree"/>
+            <field name="act_window_id" ref="action_view_icsc_hoadon_update_form2_lichsu"/>
+        </record>
+        <record id="action_view_icsc_hoadon_update_form2" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_icsc_hoadon_update_form2"/>
+            <field name="act_window_id" ref="action_view_icsc_hoadon_update_form2_lichsu"/>
+        </record>       
+         <menuitem id="menu_action_view_icsc_hoadon_update_form2_lichsu" 
+		         action="action_view_icsc_hoadon_update_form2_lichsu"			
+				parent="account.menu_finance_receivables" 
+				sequence="21" groups="base.nhom_quan_ly_trambanhang_chinhsua" />    
+    </data>
+</openerp>

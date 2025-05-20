@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        <!--
+    Sequence types for pickings
+    -->
+
+        <record id="seq_type_thongbao" model="ir.sequence.type">
+            <field name="name">thong bao</field>
+            <field name="code">icsc.khvc.thongbao.kho</field>
+        </record>
+     
+        <!--
+            Sequences for pickings
+        -->
+
+        <record id="seq_thongbao" model="ir.sequence">
+            <field name="name">thong bao</field>
+            <field name="code">icsc.khvc.thongbao.kho</field>
+            <field name="prefix">TB</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>        
+       
+  
+    </data>
+</openerp>
